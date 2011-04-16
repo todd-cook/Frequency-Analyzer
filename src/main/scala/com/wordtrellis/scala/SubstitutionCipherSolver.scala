@@ -78,7 +78,7 @@ class SubstitutionCipherSolver(
             var hm = SubstitutionBuilder.getSubstitutionAlphabet(ii);
             var c = new Candidate(plainText,
                 SubstitutionBuilder.encipherSubstitutedList(plainText,
-                CryptoFrequencies.invertMap(hm)));
+                FrequencyAnalyzer.invertMap(hm)));
             candidates.append(c);
         })
     }
@@ -92,14 +92,14 @@ class SubstitutionCipherSolver(
 
         (1 to iterations).foreach(ii => {
             var hm = SubstitutionBuilder.getRandomSubstitutionAlphabet(hints);
-            while (previousCandidateAlphabets.contains(CryptoFrequencies.mapToHashString(hm))) {
+            while (previousCandidateAlphabets.contains(FrequencyAnalyzer.mapToHashString(hm))) {
                 hm = SubstitutionBuilder.getRandomSubstitutionAlphabet(hints);
             }
             var c = new Candidate(plainText,
-                SubstitutionBuilder.encipherSubstitutedList(plainText, CryptoFrequencies.invertMap(hm))
+                SubstitutionBuilder.encipherSubstitutedList(plainText, FrequencyAnalyzer.invertMap(hm))
                 , hm);
             candidates.append(c);
-            previousCandidateAlphabets.append(CryptoFrequencies.mapToHashString(hm))
+            previousCandidateAlphabets.append(FrequencyAnalyzer.mapToHashString(hm))
         })
     }
 
@@ -110,7 +110,7 @@ class SubstitutionCipherSolver(
         // if the cipher is small and doesn't contain all the letters of the alphabet,
         // then we should pad it with what's available
         // we might as well use the desceding order of the target text
-        var cipherLettersDesc = CryptoFrequencies.completeLetterList(cipherFM.getKeyList,
+        var cipherLettersDesc = FrequencyAnalyzer.completeLetterList(cipherFM.getKeyList,
                                                                      targetLanguageFM.getKeyList)
         var targetLettersDesc = targetLanguageFM.getKeyList
         // create 0 to placeHolderCombinations
@@ -120,9 +120,9 @@ class SubstitutionCipherSolver(
         var fixedElements = cipherLettersDesc.slice(placeHolderCombinations, cipherLettersDesc.length)
 
         // populate with initial first mapping in the hopes of success ;-)
-        var hm1 = CryptoFrequencies.buildCharacterMap(cipherLettersDesc, targetLettersDesc)
+        var hm1 = FrequencyAnalyzer.buildCharacterMap(cipherLettersDesc, targetLettersDesc)
         var c1 = new Candidate(plainText,
-            SubstitutionBuilder.encipherSubstitutedList(plainText, CryptoFrequencies.invertMap(hm1))
+            SubstitutionBuilder.encipherSubstitutedList(plainText, FrequencyAnalyzer.invertMap(hm1))
             , hm1);
         candidates.append(c1);
         var iteration =0
@@ -136,9 +136,9 @@ class SubstitutionCipherSolver(
             permutation.appendAll(lowFrequencyLetters)
             iteration += 1
             println("checking permutation : " + iteration )
-            var hm = CryptoFrequencies.buildCharacterMap(permutation.toList, targetLettersDesc)
+            var hm = FrequencyAnalyzer.buildCharacterMap(permutation.toList, targetLettersDesc)
             var c = new Candidate(plainText,
-                SubstitutionBuilder.encipherSubstitutedList(plainText, CryptoFrequencies.invertMap(hm))
+                SubstitutionBuilder.encipherSubstitutedList(plainText, FrequencyAnalyzer.invertMap(hm))
                 , hm);
             candidates.append(c);
         }

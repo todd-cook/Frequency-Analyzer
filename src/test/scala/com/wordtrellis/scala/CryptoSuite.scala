@@ -47,5 +47,5 @@ class CryptoSuite extends FunSuite {
       java.io.File.separator + """\resources\words"""
 
     def createTestFrequencyMap_String =
-      CryptoFrequencies.filterOutNonUpperCase(CryptoFrequencies.getCharFrequencies(testSentence))
+      FrequencyAnalyzer.filterOutNonUpperCase(FrequencyAnalyzer.getCharFrequencies(testSentence))
 }

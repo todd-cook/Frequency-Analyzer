@@ -41,7 +41,7 @@ class FrequencyMapSpec extends Spec {
     val qBFLettersDescendingOrder = "OEHURTWPGVIAFNXSZDKCBQLMJY"
 
     def createTestFrequencyMap_Character =
-      CryptoFrequencies.filterOutNonUpperCase(CryptoFrequencies.getCharFrequencies(testSentence))
+      FrequencyAnalyzer.filterOutNonUpperCase(FrequencyAnalyzer.getCharFrequencies(testSentence))
 
     describe("A FrequencyMap object should be able to:") {
 

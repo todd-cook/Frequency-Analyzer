@@ -52,7 +52,7 @@ class TestSpecs extends TestCase {
   }
 
   def testCryptoFrequencies () {
-    new CryptoFrequenciesSpec().execute
+    new FrequencyAnalyzerSpec().execute
   }
 
 }

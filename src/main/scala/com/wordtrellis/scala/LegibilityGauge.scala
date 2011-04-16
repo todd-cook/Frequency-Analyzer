@@ -93,11 +93,11 @@ class LegibilityGauge(val commonDigraphs: List[String],
     var dictionary = new HashSet[String]();
 
     def loadDictionary(file: java.io.File): Unit = {
-        var words = CryptoFrequencies.getWordList(file)
+        var words = FrequencyAnalyzer.getWordList(file)
         words.foreach(word => dictionary.add(word))
         //todo implement filtering out small lengths
         //             this.words = uw.getWordsOfLengthOrGreater(3); //4);
-        //        this.words = CryptoFrequencies.forceUpper(words);
+        //        this.words = FrequencyAnalyzer.forceUpper(words);
     }
 
     def scoreCandidate(c: Candidate): Int = {
@@ -106,14 +106,14 @@ class LegibilityGauge(val commonDigraphs: List[String],
         //search for words
 
         textList.foreach ( text =>{
-        commonWords.foreach(word => iScore += 6 * CryptoFrequencies.countOccurences(word, text) * word.length)
-        commonDigraphs.foreach(word => iScore += 4 * CryptoFrequencies.countOccurences(word, text) * word.length)
-        commonTrigraphs.foreach(word => iScore += 8 * CryptoFrequencies.countOccurences(word, text) * word.length)
+        commonWords.foreach(word => iScore += 6 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
+        commonDigraphs.foreach(word => iScore += 4 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
+        commonTrigraphs.foreach(word => iScore += 8 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
         dictionary.foreach(word => {
-            var count = CryptoFrequencies.countOccurences(word, text)
+            var count = FrequencyAnalyzer.countOccurences(word, text)
             iScore += 10 * count * word.length
             if (count != 0 && word.length >= 7) {
-                c.addPossibleHints(CryptoFrequencies.extractMapping(c.getCharMap(), word));
+                c.addPossibleHints(FrequencyAnalyzer.extractMapping(c.getCharMap(), word));
             }
         })
         })
