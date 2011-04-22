@@ -89,8 +89,8 @@ class VingenereSolverTest extends AssertionsForJUnit {
   @Test
   def guessKey(){
 
-      val cleanText = FrequencyAnalyzer.swallowSpaces(FrequencyAnalyzer.dropNonLettersForceUpper ( data.chapterText))
-      val cipherText = vg.encipher(     cleanText, "HOLIDAY")
+      val cleanText = FrequencyAnalyzer.swallowSpaces(FrequencyAnalyzer.dropNonLettersForceUpper (data.chapterText))
+      val cipherText = vg.encipher(cleanText, "HOLIDAY")
       println(Vingenere.guessKeyLength(cipherText) )
       // Ouch, the key length is the third value, but notice the wide spread that follows after it
       //  List((14,376), (21,345), (7,325), (11,230), (24,225), (26,222), (18,211),
@@ -118,17 +118,19 @@ class VingenereSolverTest extends AssertionsForJUnit {
      var ii =0
 
      (0 until keyLength).toList.foreach( x => {
-                          println("top six guesses for Vingenere cipher key letter position: " + x + " : ")
-                          ii =0
+                          print("top six guesses for Vingenere cipher key letter position: " + x + " : ")
+                          ii = 0
                           var candidates = new ListBuffer [Tuple2[Int, Double]] ()
                           shiftedStandardDistributions.foreach(y =>{
                             candidates.append( (ii, ( FrequencyAnalyzer.probabilityDotProduct(probabilityMaps(x), y) ) ))
                             ii = ii + 1
                           })
-       var topSix  = candidates.toList.sortBy(_._2).slice(0, 6)
-       println (topSix)
-       (0 until topSix.length ).foreach( x=> print(  Vingenere.UPPER_ENGLISH.toList(  topSix(x)._1  )))
-       } )
+       var topEntries  = candidates.toList.sortBy(_._2).slice(0, 13)
+        (0 until topEntries.length).foreach( x=> print( Vingenere.UPPER_ENGLISH.toList(topEntries(x)._1  )))
+       println()
+       println (topEntries)
+             } )
+    // TODO Continue to work on this section... don't give up hope yet ;-)
 
 
   }
