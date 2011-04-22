@@ -28,8 +28,6 @@
 
 package com.wordtrellis.scala
 
-;
-
 import collection.immutable.List
 import collection.mutable.{HashSet, ListBuffer, HashMap}
 import io.BufferedSource
@@ -38,7 +36,7 @@ import java.io.ByteArrayInputStream
 /**
  * Utility class designed for solving ciphers
  * @author : Todd Cook
- * @since : Feb 20, 2010 11:28:08 AM
+ * @since : Feb 20, 2010
  *
  */
 class FrequencyAnalyzer[T] {
@@ -71,15 +69,15 @@ object FrequencyAnalyzer {
    */
   val DEFAULT_DESCENDING_LETTER_FREQUENCIES = "ETAIONRSHDLCUFMPBGWYVKXJQZ"
 
-  def isVowel (character: java.lang.Character): Boolean = {
-    VOWELS.contains(character)
+  def isVowel (car: Char): Boolean = {
+    VOWELS.contains(car)
   }
 
-  def isConsonant (character: java.lang.Character): Boolean = {
-    CONSONANTS.contains(character)
+  def isConsonant (car: Char): Boolean = {
+    CONSONANTS.contains(car)
   }
 
-  def countCharacters (text: String): HashMap[java.lang.Character, Int] = {
+  def countCharacters (text: String): HashMap[Char, Int] = {
     getCharFrequencies(text).getKeyMap
   }
 
@@ -142,13 +140,32 @@ object FrequencyAnalyzer {
    * creates FrequencyMap [Character]
    * forces to upperCase
    */
-  def getCharFrequencies (text: String): FrequencyMap[java.lang.Character] = {
-    var myf = new FrequencyMap[java.lang.Character]()
-    (text.toCharArray).toList.foreach(x => myf.add(java.lang.Character.toUpperCase((x.asInstanceOf[java.lang.Character]).charValue)))
+  def getCharFrequencies (text: String): FrequencyMap[Char] = {
+    var myf = new FrequencyMap[Char]()
+    (text).toList.foreach(x => myf.add( (x.asInstanceOf[Char]).toUpper ))
     myf
   }
 
-  def filterOutNonUpperCase (fm: FrequencyMap[java.lang.Character]): FrequencyMap[java.lang.Character] = {
+  def swallowSpaces (text :String) :String = text.replaceAll("\\s", "")
+
+  /**
+   * Used to compute a composite score for two FrequencyMap.toProbabilityMap frequency maps to
+   */
+
+  def probabilityDotProduct (mapOne: Map[Char, Double], mapTwo: Map[Char, Double]): Double = {
+    var values = mapOne.values.zip(mapTwo.values).toList
+    var newValues = values.map(x => x._1 * x._2)
+    newValues.foldLeft(0d)(_.asInstanceOf[Double] + _.asInstanceOf[Double])
+  }
+
+  def shiftDistributionValues (map: Map[Char, Double], rightShift: Int): Map[Char, Double] = {
+    var sortedMapList = map.toList.sortBy(_._1) // it is critical to retain alphabetical order for the shift
+    val (keys, values) = sortedMapList.unzip
+    var newValues = values.slice(values.length - rightShift, values.length) ++ values.slice(0, values.length - rightShift);
+    keys.zip(newValues).toMap;
+  }
+
+  def filterOutNonUpperCase (fm: FrequencyMap[Char]): FrequencyMap[Char] = {
     fm.getKeyList.foreach(x => if (UPPERALPHABET.indexOf(x) == -1) {
       fm.removeKey(x)
     })
@@ -299,7 +316,7 @@ object FrequencyAnalyzer {
     new BufferedSource(new java.io.FileInputStream(pathAndFile))
   }
 
-  def processFileChars (bs: BufferedSource, fm: FrequencyMap[Character]): FrequencyMap[Character] = {
+  def processFileChars (bs: BufferedSource, fm: FrequencyMap[Char]): FrequencyMap[Char] = {
     var linesIt = bs.getLines()
     while (linesIt.hasNext) {
       var line = linesIt.next
@@ -308,25 +325,25 @@ object FrequencyAnalyzer {
     fm
   }
 
-  def processLeadingChars (bs: BufferedSource, fm: FrequencyMap[Character]): FrequencyMap[Character] = {
+  def processLeadingChars (bs: BufferedSource, fm: FrequencyMap[Char]): FrequencyMap[Char] = {
     var linesIt = bs.getLines()
     while (linesIt.hasNext) {
       var line = linesIt.next
-      fm.add(line(0).toUpperCase)
+      fm.add(line(0).toUpper)
     }
     filterOutNonUpperCase(fm)
   }
 
-  def processTrailingChars (bs: BufferedSource, fm: FrequencyMap[Character]): FrequencyMap[Character] = {
+  def processTrailingChars (bs: BufferedSource, fm: FrequencyMap[Char]): FrequencyMap[Char] = {
     var linesIt = bs.getLines()
     while (linesIt.hasNext) {
       var line = linesIt.next
-      fm.add(line(line.length - 1).toUpperCase)
+      fm.add(line(line.length - 1).toUpper)
     }
     filterOutNonUpperCase(fm)
   }
 
-  def processWordLengths (bs: BufferedSource, fm: FrequencyMap[Integer]): FrequencyMap[Integer] = {
+  def processWordLengths (bs: BufferedSource, fm: FrequencyMap[Int]): FrequencyMap[Int] = {
     var linesIt = bs.getLines()
     while (linesIt.hasNext) {
       var line = linesIt.next
@@ -377,8 +394,8 @@ object FrequencyAnalyzer {
     fm
   }
 
-  def getCharFrequencies (pathAndFile: java.io.File): FrequencyMap[Character] = {
-    processFileChars(loadFile(pathAndFile), new FrequencyMap[Character]())
+  def getCharFrequencies (pathAndFile: java.io.File): FrequencyMap[Char] = {
+    processFileChars(loadFile(pathAndFile), new FrequencyMap[Char]())
   }
 
   def getDigraphFrequencies (pathAndFile: java.io.File): FrequencyMap[String] = {
@@ -394,16 +411,16 @@ object FrequencyAnalyzer {
     processFileTrigraphs(loadFile(pathAndFile), trigraphsFM)
   }
 
-  def getLeadingCharFrequencies (pathAndFile: java.io.File): FrequencyMap[Character] = {
-    processLeadingChars(loadFile(pathAndFile), new FrequencyMap[Character]())
+  def getLeadingCharFrequencies (pathAndFile: java.io.File): FrequencyMap[Char] = {
+    processLeadingChars(loadFile(pathAndFile), new FrequencyMap[Char]())
   }
 
-  def getTrailingCharFrequencies (pathAndFile: java.io.File): FrequencyMap[Character] = {
-    processTrailingChars(loadFile(pathAndFile), new FrequencyMap[Character]())
+  def getTrailingCharFrequencies (pathAndFile: java.io.File): FrequencyMap[Char] = {
+    processTrailingChars(loadFile(pathAndFile), new FrequencyMap[Char]())
   }
 
-  def getWordLengths (pathAndFile: java.io.File): FrequencyMap[Integer] = {
-    processWordLengths(loadFile(pathAndFile), new FrequencyMap[Integer]())
+  def getWordLengths (pathAndFile: java.io.File): FrequencyMap[Int] = {
+    processWordLengths(loadFile(pathAndFile), new FrequencyMap[Int]())
   }
 
   def getWordList (pathAndFile: java.io.File): List[String] = {
@@ -494,27 +511,26 @@ object FrequencyAnalyzer {
    * @param hm
    * @return
    */
-  def invertMap (hm: HashMap[java.lang.Character, java.lang.Character])
-  : HashMap[java.lang.Character, java.lang.Character] = {
-    var invertedHM = new HashMap[java.lang.Character, java.lang.Character]
+  def invertMap (hm: HashMap[Char, Char])  :HashMap[Char, Char] = {
+    var invertedHM = new HashMap[Char, Char]
     hm.keys.foreach(x => invertedHM.put(hm.get(x).get, x))
     invertedHM
   }
 
-  def mapToHashString (hm: HashMap[java.lang.Character, java.lang.Character]): String = {
+  def mapToHashString (hm: HashMap[Char, Char]): String = {
     hm.keysIterator.toList.mkString("") +
       hm.valuesIterator.toList.mkString("")
   }
 
-  def convertToCharacterMap (source: String, dest: String): HashMap[java.lang.Character, java.lang.Character] = {
-    buildCharacterMap(source.toCharArray.toList.asInstanceOf[List[java.lang.Character]],
-                      dest.toCharArray.toList.asInstanceOf[List[java.lang.Character]])
+  def convertToCharacterMap (source: String, dest: String): HashMap[Char, Char] = {
+    buildCharacterMap(source.toCharArray.toList.asInstanceOf[List[Char]],
+                      dest.toCharArray.toList.asInstanceOf[List[Char]])
   }
 
   // todo write test
-  def buildCharacterMap (sourceChars: List[java.lang.Character], destChars: List[java.lang.Character]): HashMap[java.lang.Character, java.lang.Character] = {
+  def buildCharacterMap (sourceChars: List[Char], destChars: List[Char]): HashMap[Char, Char] = {
     require(sourceChars.length == destChars.length)
-    var hm = new HashMap[java.lang.Character, java.lang.Character]()
+    var hm = new HashMap[Char, Char]()
     (0 to sourceChars.length - 1).foreach(ii => hm.put(sourceChars(ii), destChars(ii)))
     hm
   }
@@ -539,11 +555,11 @@ object FrequencyAnalyzer {
    * @param word
    * @return
    */
-  def extractMapping (charMap: HashMap[java.lang.Character, java.lang.Character], word: String)
-  : HashMap[java.lang.Character, java.lang.Character] = {
+  def extractMapping (charMap: HashMap[Char, Char], word: String)
+  : HashMap[Char, Char] = {
     require(word.length > 0)
     var invertedMapping = invertMap(charMap)
-    var mapping = new HashMap[java.lang.Character, java.lang.Character]()
+    var mapping = new HashMap[Char, Char]()
     // the following could be more efficient by eliminating duplicate letter/calls
     // but needless optimization is the root of all evil, sayeth Knuth
     (0 to word.length - 1).foreach(ii => mapping.put(invertedMapping.get(word.charAt(ii)).get, word.charAt(ii)))
@@ -581,26 +597,26 @@ object FrequencyAnalyzer {
    * TODO make test for this
    */
 
-  def extractNonLetterPositionList (text: String): List[Tuple2[Int, java.lang.Character]] = {
-    var buf = new ListBuffer[Tuple2[Int, java.lang.Character]]
+  def extractNonLetterPositionList (text: String): List[Tuple2[Int, Char]] = {
+    var buf = new ListBuffer[Tuple2[Int, Char]]
     (0 to text.length - 1).foreach(pos => {
       if (UPPERALPHABET.indexOf(
-        java.lang.Character.toUpperCase(text.charAt(pos))) == -1) {
+       (text.charAt(pos).toUpper)) == -1) {
         buf.append(Tuple2(pos, text.charAt(pos)))
       }
     })
     buf.toList
   }
 
-  def insertNonLetterPositionList (text: String, nonLetterPositionList: List[Tuple2[Int, java.lang.Character]]): String = {
+  def insertNonLetterPositionList (text: String, nonLetterPositionList: List[Tuple2[Int, Char]]): String = {
     var buf = new StringBuffer
     buf.append(text)
     nonLetterPositionList.foreach(item => buf.insert(item._1, item._2))
     buf.toString
   }
 
-  def completeLetterList (cipherFMKeys: List[java.lang.Character], lettersByFrequency: List[java.lang.Character]): List[java.lang.Character] = {
-    var buf = new ListBuffer[java.lang.Character]()
+  def completeLetterList (cipherFMKeys: List[Char], lettersByFrequency: List[Char]): List[Char] = {
+    var buf = new ListBuffer[Char]()
     cipherFMKeys.foreach(c => buf.append(c))
     lettersByFrequency.foreach(c => if (!cipherFMKeys.contains(c)) {
       buf.append(c)

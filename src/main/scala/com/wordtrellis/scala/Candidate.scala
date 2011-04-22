@@ -39,26 +39,26 @@ import scala.collection.immutable.List
  */
 class Candidate(val cipherText: List[String],
                 val decipheredText: List[String],
-                var charMap: HashMap[java.lang.Character, java.lang.Character],
+                var charMap: HashMap[Char, Char],
                 val useHints: Boolean,
                 var formula: String)
         extends Ordered[Candidate]
 {
     def this(cipherText: String, decipheredText: String)  {
         this ( List(cipherText), List(decipheredText),
-               new HashMap[java.lang.Character, java.lang.Character](), false, "")
+               new HashMap[Char, Char](), false, "")
     }
 
     def this(cipherText: List[String], decipheredText :List[String])  {
         this (cipherText, decipheredText,
-              new HashMap[java.lang.Character, java.lang.Character](), false, "")
+              new HashMap[Char, Char](), false, "")
     }
 
-    def this(cipherText: String, decipheredText: List[String], charMap: HashMap[java.lang.Character, java.lang.Character])  {
+    def this(cipherText: String, decipheredText: List[String], charMap: HashMap[Char, Char])  {
         this (List(cipherText), decipheredText, charMap, false, "")
     }
 
-    def this (cipherTextList :List[String] , decipheredText: List[String], charMap: HashMap[java.lang.Character, java.lang.Character])   {
+    def this (cipherTextList :List[String] , decipheredText: List[String], charMap: HashMap[Char, Char])   {
         this ( cipherTextList  , decipheredText, charMap, false, "")
     }
 
@@ -67,7 +67,7 @@ class Candidate(val cipherText: List[String],
 
     var score = 0;
 
-    var possibleHints = new HashMap[java.lang.Character, java.lang.Character]()
+    var possibleHints = new HashMap[Char, Char]()
 
     // todo replace this in calling code with the VAL reference
     def getDecipheredText() = decipheredText// .mkString(" ")
@@ -78,7 +78,7 @@ class Candidate(val cipherText: List[String],
 
     def getPossibleHints() = possibleHints
 
-    def addPossibleHints(hints: HashMap[java.lang.Character, java.lang.Character]) {
+    def addPossibleHints(hints: HashMap[Char, Char ]) {
         hints.keysIterator.toList.foreach(k => possibleHints.put(k, hints.get(k).get))
     }
 

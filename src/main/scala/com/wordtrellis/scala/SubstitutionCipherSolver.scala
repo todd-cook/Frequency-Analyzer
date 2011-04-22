@@ -54,10 +54,10 @@ class SubstitutionCipherSolver(
     }
 
 
-    var shmp = new HashMap[Character, Character]()
+    var shmp = new HashMap[Char, Char]()
     var legibilityGauge = new LegibilityGauge();
     var candidates = new ListBuffer[Candidate]()
-    var hints = new HashMap[Character, Character]()
+    var hints = new HashMap[Char, Char]()
 
     require(plainText != null)
 
@@ -83,7 +83,7 @@ class SubstitutionCipherSolver(
         })
     }
 
-    def useHints(hints: HashMap[java.lang.Character, java.lang.Character]): Unit = {
+    def useHints(hints: HashMap[Char, Char]): Unit = {
         this.hints = hints;
     }
 
@@ -104,8 +104,8 @@ class SubstitutionCipherSolver(
     }
 
 
-    def computeFrequencyMappedAlphabets(cipherFM: FrequencyMap[java.lang.Character],
-                                        targetLanguageFM: FrequencyMap[java.lang.Character],
+    def computeFrequencyMappedAlphabets(cipherFM: FrequencyMap[Char],
+                                        targetLanguageFM: FrequencyMap[Char],
                                         placeHolderCombinations: Int): Unit = {
         // if the cipher is small and doesn't contain all the letters of the alphabet,
         // then we should pad it with what's available
@@ -115,7 +115,7 @@ class SubstitutionCipherSolver(
         var targetLettersDesc = targetLanguageFM.getKeyList
         // create 0 to placeHolderCombinations
         var permutationGenerator = new PermutationGenerator(placeHolderCombinations)
-        var permutation = new ListBuffer[java.lang.Character]()
+        var permutation = new ListBuffer[Char]()
         var changeableElements = cipherLettersDesc.slice(0, placeHolderCombinations)
         var fixedElements = cipherLettersDesc.slice(placeHolderCombinations, cipherLettersDesc.length)
 
@@ -127,7 +127,7 @@ class SubstitutionCipherSolver(
         candidates.append(c1);
         var iteration =0
         while (permutationGenerator.hasMore()) {
-            permutation = new ListBuffer[java.lang.Character]()
+            permutation = new ListBuffer[Char]()
             var indices = permutationGenerator.getNext()
             (0 to indices.length - 1).foreach(ii => permutation.append(changeableElements(indices(ii))))
             println( permutation.mkString(" "));

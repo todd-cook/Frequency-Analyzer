@@ -71,7 +71,7 @@ class FrequencyAnalyzerSpec extends Spec with AssertionsForJUnit {
         }
 
         it("reveal how many times a particular letter appears in a text") {
-            var cf = new FrequencyAnalyzer[Character]()
+            var cf = new FrequencyAnalyzer[Char]()
             assert(3 === cf.getOccurences('E', createTestFrequencyMap_Character))
         }
 
@@ -163,9 +163,9 @@ class FrequencyAnalyzerSpec extends Spec with AssertionsForJUnit {
                     === FrequencyAnalyzer.MAX_TRIGRAPH_COMBOS)
         }
 
-        it("reduce a file to a FrequencyMap[Character]") {
+        it("reduce a file to a FrequencyMap[Char]") {
             var ucfm = FrequencyAnalyzer.getCharFrequencies(dictionary)
-            ucfm.getKeyCountList.foreach(x => assert(x.key.isInstanceOf[java.lang.Character]))
+            ucfm.getKeyCountList.foreach(x => assert(x.key.isInstanceOf[Char]))
             assert(ucfm.getKeyCountList.size === 27) // TODO check this
         }
 

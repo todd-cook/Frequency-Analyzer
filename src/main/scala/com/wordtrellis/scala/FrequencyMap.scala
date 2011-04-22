@@ -75,7 +75,7 @@ class FrequencyMap[T](val items: List[T]) {
 
     def setSampleFiltration(sample: Int) = {samplingSize = sample; }
 
-    def trimSamples() = {
+    def trimSamples() :Unit = {
         // TODO decide if filtration floor is helpful
         //   samplingSize=  sample; filtrationFloor
         var newKClist = getKeyCountList.slice(0, samplingSize)
@@ -93,19 +93,18 @@ class FrequencyMap[T](val items: List[T]) {
             keyMap += (item -> (keyMap.get(item).get + 1))
     }
 
-    // convenience method; sometimes the number of occurences is known; e.g. caching
-    def add(item: T, occurences: Int): Unit = {
+    // convenience method; sometimes the number of occurrences is known; e.g. caching
+    def add(item: T, occurrences: Int): Unit = {
         if (samplingSize != 0 && keyMap.size > samplingSize)
             trimSamples()
 
         if (!keyMap.contains(item))
-            keyMap += (item -> occurences)
+            keyMap += (item -> occurrences)
         else
-            keyMap += (item -> (keyMap.get(item).get + occurences))
+            keyMap += (item -> (keyMap.get(item).get + occurrences))
     }
 
     def addAll(items: List[T]): Unit = {items.foreach(x => add(x))}
-
 
     // returns list of keys, sorted by frequency
     def getKeyList: List[T] = for{kc <- getKeyCountList(); k = kc.key} yield (k)
@@ -114,7 +113,7 @@ class FrequencyMap[T](val items: List[T]) {
 
     def getKeyListFloor(floor: Int): List[T] = for{kc <- floorList(floor); k = kc.key} yield (k)
 
-    def getKeyMap() = keyMap
+    def getKeyMap = keyMap
 
     def removeKey(key: T) = keyMap.remove(key)
 
@@ -134,11 +133,23 @@ class FrequencyMap[T](val items: List[T]) {
 
     def slice(start: Int, end: Int) = getKeyCountList.slice(start, end)
 
-    override def toString() = keyMap.toString
+    override def toString = keyMap.toString
 
     def toList(): List[String] = {
         var lines = new ListBuffer[String]()
         keyMap.keysIterator.toList.foreach(x => lines.append(x + " : " + keyMap.get(x).get.asInstanceOf[Int]))
         lines.toList
     }
+
+  /**
+   * Often a frequency map most useful as a map with probability distribution values;
+   * so that the total sum of the map of probabilities equals one or nearly so.
+   */
+    def toProbabilityMap() :Map[T,Double] ={
+      val total :Double  = keyMap.values.toList.foldLeft(0)(_ + _) * 1.0D
+      val (keys, values) =  keyMap.toList.unzip
+      val newValues = values.map (x => x / total )
+      keys.zip(newValues).toMap
+    }
+
 }

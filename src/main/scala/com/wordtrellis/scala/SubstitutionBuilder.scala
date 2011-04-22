@@ -43,8 +43,8 @@ object SubstitutionBuilder {
     val ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     val ALPHABETS2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    def getSubstitutionAlphabet(iOffset: Int): HashMap[java.lang.Character, java.lang.Character] = {
-        var substitutionMap = new HashMap[java.lang.Character, java.lang.Character]()
+    def getSubstitutionAlphabet(iOffset: Int): HashMap[Char, Char] = {
+        var substitutionMap = new HashMap[Char, Char]()
         (0 to ALPHABET.length - 1).foreach(x =>
                 substitutionMap.put(ALPHABET.charAt(x), ALPHABETS2.charAt(x + iOffset)))
         substitutionMap
@@ -53,14 +53,14 @@ object SubstitutionBuilder {
     /**
      * Create a random substitution alphabet, prepoulating with hints
      */
-    def getRandomSubstitutionAlphabet(hints: HashMap[java.lang.Character, java.lang.Character])
-    : HashMap[java.lang.Character, java.lang.Character] = {
+    def getRandomSubstitutionAlphabet(hints: HashMap[Char, Char])
+    : HashMap[Char, Char] = {
         var random = new Random(new Date().getTime());
-        var substitutionMap = new HashMap[java.lang.Character, java.lang.Character]()
+        var substitutionMap = new HashMap[Char, Char]()
         var availableKeys = ALPHABET.toCharArray.toList
         var availableValues = ALPHABET.toCharArray.toList
-        var key: java.lang.Character = null;
-        var substitutionLetter: java.lang.Character = null;
+        var key: Char = ' ';
+        var substitutionLetter: Char = ' ';
 
         if (hints != null) {
             hints.keysIterator.toList.foreach(key => substitutionMap.put(key, hints.get(key).get))
@@ -75,8 +75,8 @@ object SubstitutionBuilder {
             key = availableKeys(ii)
             substitutionLetter = availableValues(random.nextInt(availableKeys.length))
             substitutionMap.put(key, substitutionLetter)
-            availableKeys = availableKeys filterNot ( x => x.asInstanceOf[java.lang.Character] == key)
-            availableValues = availableValues filterNot (y => y.asInstanceOf[java.lang.Character] == substitutionLetter)
+            availableKeys = availableKeys filterNot ( x => x.asInstanceOf[Char] == key)
+            availableValues = availableValues filterNot (y => y.asInstanceOf[Char] == substitutionLetter)
         })
         substitutionMap
     }
@@ -88,13 +88,12 @@ object SubstitutionBuilder {
     /**
      * used for getting creating substitution alphabets from the mapping of a decimated alphabet
      */
-    def getSubstitutionAlphabet(iOffset: Int, hm: HashMap[java.lang.Character, java.lang.Character])
-    : HashMap[java.lang.Character, java.lang.Character] =
+    def getSubstitutionAlphabet(iOffset: Int, hm: HashMap[Char, Char]) : HashMap[Char, Char] =
         {
-            var substitutionMap = new HashMap[java.lang.Character, java.lang.Character]()
-            var key:java.lang.Character = null; // key
-            var key2:java.lang.Character = null; // decimated value
-            var substitutionLetter:java.lang.Character = null;
+            var substitutionMap = new HashMap[Char, Char]()
+            var key:Char = ' '; // key
+            var key2:Char = ' '; // decimated value
+            var substitutionLetter:Char = ' ';
 
             (0 to ALPHABET.length).foreach(ii => {
                 key = ALPHABET.charAt(ii)
@@ -109,8 +108,7 @@ object SubstitutionBuilder {
     /**
      * Plain text should be converted to upper case before calling
      */
-    def encipherSubstituted(plainText: String, substitutionMap: HashMap[java.lang.Character, java.lang.Character])
-    : String = {
+    def encipherSubstituted(plainText: String, substitutionMap: HashMap[Char, Char]) : String = {
         var result = new StringBuffer()
         plainText.toCharArray.toList.foreach(c => {
             var lookup = substitutionMap.get(c);
@@ -123,7 +121,7 @@ object SubstitutionBuilder {
     /**
      * We can handle list of ciphers as well
      */
-    def encipherSubstitutedList(plainTextList: List[String], substitutionMap: HashMap[java.lang.Character, java.lang.Character])
+    def encipherSubstitutedList(plainTextList: List[String], substitutionMap: HashMap[Char, Char])
     : List[String] = {
         var resultList = new ListBuffer[String]()
         plainTextList.foreach(plainText =>

@@ -14,17 +14,18 @@ Provided Examples
 * Scala test integration with JUnit
 * Scala Test Spec as BDD (Behavior Driven Development)
 * Cobertura report on unit test code coverage
-
+* Maven generation of Scaladocs
 
 How To Run the GUI
 ------------------
 1. Download the project
-2. Download and set up [Maven 2]<http://maven.apache.org>
+2. Download and set up [Maven 2](http://maven.apache.org)
 3. Navigate to the project directory, and run these commands:
-    cd FrequencyAnalyzer;
-    mvn clean package;
-    cd target;
-    java -jar frequency-analyzer-gui-dist.jar;
+
+* cd FrequencyAnalyzer;
+* mvn clean package;
+* cd target;
+* java -jar frequency-analyzer-gui-dist.jar;
 
 Two jar files are created in the target directory:
 
@@ -47,6 +48,6 @@ Related links
  To Do:
 ------
 * Enhance the Scala to Java interface so that this library provides a common library to Java programs.
-* Provide a separate standalone Java program example that uses the library.
+* Provide a separate standalone Java program example that uses the library (in progress).
 * More unit tests.
 * Expand multilingual character support.

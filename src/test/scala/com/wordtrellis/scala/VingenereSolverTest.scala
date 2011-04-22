@@ -36,11 +36,15 @@ package com.wordtrellis.scala
 import org.scalatest.junit.AssertionsForJUnit
 import org.junit.Assert._
 import org.junit.Test
+import collection.mutable.ListBuffer
 
 class VingenereSolverTest extends AssertionsForJUnit {
 
   val vg = new Vingenere(Vingenere.UPPER_ENGLISH)
   val vg3 = new Vingenere(Vingenere.LOWER_ENGLISH)
+  val data = new TestData()
+
+
 
   @Test
   def testEncipher () {
@@ -77,11 +81,60 @@ class VingenereSolverTest extends AssertionsForJUnit {
 
   @Test
   def guessKeyLength () {
-    assertTrue((6, 23) == Vingenere.guessKeyLength(resultOne)(0))
+    assertTrue((6, 25) == Vingenere.guessKeyLength(resultOne)(0))
     // TODO fix this, the guessed key is the second entry
-    println(Vingenere.guessKeyLength(resultTwo))
-    assertTrue (Vingenere.guessKeyLength(resultTwo)(1) == (5,24) )
+    assertTrue (Vingenere.guessKeyLength(resultTwo)(1) == (5,25) )
   }
+
+  @Test
+  def guessKey(){
+
+      val cleanText = FrequencyAnalyzer.swallowSpaces(FrequencyAnalyzer.dropNonLettersForceUpper ( data.chapterText))
+      val cipherText = vg.encipher(     cleanText, "HOLIDAY")
+      println(Vingenere.guessKeyLength(cipherText) )
+      // Ouch, the key length is the third value, but notice the wide spread that follows after it
+      //  List((14,376), (21,345), (7,325), (11,230), (24,225), (26,222), (18,211),
+      val (keyLength, occurrences) = Vingenere.guessKeyLength(cipherText)(2)
+      println( "KeyLength for huck finn cipher: "+ keyLength )
+      var probMaps = new ListBuffer[Map[Char, Double]]()
+      (0 until keyLength).foreach(x => probMaps.append(FrequencyAnalyzer.getCharFrequencies(
+                                        Vingenere.extractLetters(cipherText, x)).toProbabilityMap))
+     val probabilityMaps = probMaps.toList
+     /**
+     * a little bit contrived, but we'll assume a perfect probability distribution map;
+     * This will help us work out the kinks in the test; later we can dirty the data and
+     * strain out the good from the bad
+     */
+     val goldenDistribution = FrequencyAnalyzer.getCharFrequencies(cleanText).toProbabilityMap
+      // TODO implement a FrequencyAnalyzer Builder pattern
+     var distBuffer = new ListBuffer[Map[Char, Double]] ()
+     (0 to 25).toList.foreach ( x => distBuffer.append( FrequencyAnalyzer.shiftDistributionValues(goldenDistribution, x)  ))
+     val shiftedStandardDistributions =  distBuffer.toList
+
+    /**
+     * The position match with shifted standard distribution determines the letter;
+     * hence ii used for tracking
+     */
+     var ii =0
+
+     (0 until keyLength).toList.foreach( x => {
+                          println("top six guesses for Vingenere cipher key letter position: " + x + " : ")
+                          ii =0
+                          var candidates = new ListBuffer [Tuple2[Int, Double]] ()
+                          shiftedStandardDistributions.foreach(y =>{
+                            candidates.append( (ii, ( FrequencyAnalyzer.probabilityDotProduct(probabilityMaps(x), y) ) ))
+                            ii = ii + 1
+                          })
+       var topSix  = candidates.toList.sortBy(_._2).slice(0, 6)
+       println (topSix)
+       (0 until topSix.length ).foreach( x=> print(  Vingenere.UPPER_ENGLISH.toList(  topSix(x)._1  )))
+       } )
+
+
+  }
+
+
+
 
   // TODO create map for each key value, generate candidates, score, sort and assert
 
