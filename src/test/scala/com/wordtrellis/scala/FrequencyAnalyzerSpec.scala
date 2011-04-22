@@ -244,7 +244,24 @@ class FrequencyAnalyzerSpec extends Spec with AssertionsForJUnit {
         it ("reduce a file to a list of words of a given length")  {
             var result = FrequencyAnalyzer.getWordsOfLength(dictionary, 10)
             assert (result(0).length === 10)
-                    }
+           }
+
+       it ("compute a dot product reduction of two probability distributions"){
+
+            val SAD  = Map('a' ->  0.082d, 'b' -> 0.015d,'c' -> 0.028d,'d' -> 0.043d,
+                           'e' -> 0.127d,'f' -> 0.022d,'g' -> 0.02d,'h' -> 0.061d,'i' -> 0.07d,
+                           'j' -> 0.002d,'k' -> 0.008d,'l' -> 0.04d,'m' -> 0.024d,
+                           'n' -> 0.067d,'o' -> 0.075d,'p' -> 0.019d,'q' -> 0.001d,
+                           'r' -> 0.06d,'s' -> 0.063d,'t' -> 0.091d,'u' -> 0.028d,
+                           'v' -> 0.01d,'w' -> 0.023d,'x' -> 0.001d,'y' -> 0.02d,'z' -> 0.001d)
+            val W6 = Map ('a' -> 0.0962d,'b' -> 0d,'c' -> 0.0385d,'d' -> 0.1346d,
+                          'e' -> 0d,'f'-> 0.0577d,'g' -> 0.1731d,'h' -> 0d,'i' -> 0d,
+                          'j' -> 0.0577d,'k' -> 0.1346d,'l' -> 0.0577d,'m' -> 0.0192d,
+                          'n' -> 0d,'o' -> 0.0192d,'p' -> 0d,'q' -> 0d,'r' -> 0d,
+                          's' -> 0.0385d,'t' -> 0d,'u' -> 0.0769d,'v' -> 0d,
+                          'w' -> 0.0769d,'x' -> 0d,'y' -> 0d,'z' -> 0.0192d)
+          assert(0.0312532D === FrequencyAnalyzer.probabilityDotProduct(SAD, W6))
+          }
 
   }
 }
