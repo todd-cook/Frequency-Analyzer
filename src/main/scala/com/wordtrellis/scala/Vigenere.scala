@@ -29,15 +29,13 @@
 package com.wordtrellis.scala
 
 /**
- * Utility class for Vingenere Cipher
- *
- *
+ * Utility class for Vigenere Cipher
  *
  * @author Todd Cook
  * @since 4/19/11 9:10 PM
  */
 
-object Vingenere {
+object Vigenere {
   val UPPER_ENGLISH = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   val LOWER_ENGLISH = "abcdefghijklmnopqrstuvwxyz";
 
@@ -85,7 +83,7 @@ object Vingenere {
     }
 }
 
-class Vingenere (val charset: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ") {
+class Vigenere (val charset: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ") {
   val CHARS = charset.toList
 
   def encipher (text: String, key: String): String = {

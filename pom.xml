@@ -91,7 +91,8 @@
                     <archive>
                         <manifest>
                             <!--The following class must implement main(args :Array[String]) -->
-                            <mainClass>com.wordtrellis.scala.gui.FrequencyAnalyzerGui</mainClass>
+                            <!--<mainClass>com.wordtrellis.scala.gui.VigenereAnalyzerGui</mainClass>-->
+                                 <mainClass>com.wordtrellis.scala.gui.EncryptionDecryptionGUI</mainClass>
                         </manifest>
                     </archive>
                     <descriptors>

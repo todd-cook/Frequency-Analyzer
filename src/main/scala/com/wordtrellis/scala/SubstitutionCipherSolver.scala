@@ -28,21 +28,21 @@
 
 package com.wordtrellis.scala;
 
-/**
- *
- * @author : Todd Cook
- * @since : Mar 6, 2010 3:54:04 PM
- */
 import collection.mutable.{ListBuffer, HashMap}
 import scala.collection.immutable.List
 import com.wordtrellis.discrete.PermutationGenerator;
 
-
+/**
+ * Utility class for solving substitution ciphers
+ * @author : Todd Cook
+ * @since : Mar 6, 2010 3:54:04 PM
+ */
 class SubstitutionCipherSolver(
         val plainText: List[String],
         val removeSpaces: Boolean,
-        val removePunctuation: Boolean)
-   {
+        val removePunctuation: Boolean,
+        val ALPHABET: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+{
 
     def this(plainText: String) {
         this (List(plainText), true, true)
@@ -53,11 +53,11 @@ class SubstitutionCipherSolver(
         this  ( plainTextList, true, true)
     }
 
-
     var shmp = new HashMap[Char, Char]()
     var legibilityGauge = new LegibilityGauge();
     var candidates = new ListBuffer[Candidate]()
     var hints = new HashMap[Char, Char]()
+    val substitutionBuilder = new SubstitutionBuilder(ALPHABET)
 
     require(plainText != null)
 
@@ -75,9 +75,9 @@ class SubstitutionCipherSolver(
     def compute(): Unit = {
         // generate randomly substituted alphabet
         (1 to 26).foreach(ii => {
-            var hm = SubstitutionBuilder.getSubstitutionAlphabet(ii);
+            var hm = substitutionBuilder.getSubstitutionAlphabet(ii);
             var c = new Candidate(plainText,
-                SubstitutionBuilder.encipherSubstitutedList(plainText,
+                substitutionBuilder.encipherSubstitutedList(plainText,
                 FrequencyAnalyzer.invertMap(hm)));
             candidates.append(c);
         })
@@ -91,12 +91,12 @@ class SubstitutionCipherSolver(
         var previousCandidateAlphabets = new ListBuffer[String]();
 
         (1 to iterations).foreach(ii => {
-            var hm = SubstitutionBuilder.getRandomSubstitutionAlphabet(hints);
+            var hm = substitutionBuilder.getRandomSubstitutionAlphabet(hints);
             while (previousCandidateAlphabets.contains(FrequencyAnalyzer.mapToHashString(hm))) {
-                hm = SubstitutionBuilder.getRandomSubstitutionAlphabet(hints);
+                hm = substitutionBuilder.getRandomSubstitutionAlphabet(hints);
             }
             var c = new Candidate(plainText,
-                SubstitutionBuilder.encipherSubstitutedList(plainText, FrequencyAnalyzer.invertMap(hm))
+                substitutionBuilder.encipherSubstitutedList(plainText, FrequencyAnalyzer.invertMap(hm))
                 , hm);
             candidates.append(c);
             previousCandidateAlphabets.append(FrequencyAnalyzer.mapToHashString(hm))
@@ -122,7 +122,7 @@ class SubstitutionCipherSolver(
         // populate with initial first mapping in the hopes of success ;-)
         var hm1 = FrequencyAnalyzer.buildCharacterMap(cipherLettersDesc, targetLettersDesc)
         var c1 = new Candidate(plainText,
-            SubstitutionBuilder.encipherSubstitutedList(plainText, FrequencyAnalyzer.invertMap(hm1))
+            substitutionBuilder.encipherSubstitutedList(plainText, FrequencyAnalyzer.invertMap(hm1))
             , hm1);
         candidates.append(c1);
         var iteration =0
@@ -138,10 +138,10 @@ class SubstitutionCipherSolver(
             println("checking permutation : " + iteration )
             var hm = FrequencyAnalyzer.buildCharacterMap(permutation.toList, targetLettersDesc)
             var c = new Candidate(plainText,
-                SubstitutionBuilder.encipherSubstitutedList(plainText, FrequencyAnalyzer.invertMap(hm))
+                substitutionBuilder.encipherSubstitutedList(plainText, FrequencyAnalyzer.invertMap(hm))
                 , hm);
             candidates.append(c);
         }
-        println("done")
+        //println("done")
     }
 }

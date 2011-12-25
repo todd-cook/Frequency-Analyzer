@@ -31,6 +31,7 @@ package com.wordtrellis.scala
 import org.scalatest.{TestFailedException, Spec}
 import org.scalatest.junit.AssertionsForJUnit
 import org.junit.Assert._
+import org.junit.Test
 
 /**
  * The Spec that defines the behavior of the FrequencyAnalyzer class
@@ -262,6 +263,17 @@ class FrequencyAnalyzerSpec extends Spec with AssertionsForJUnit {
                           'w' -> 0.0769d,'x' -> 0d,'y' -> 0d,'z' -> 0.0192d)
           assert(0.0312532D === FrequencyAnalyzer.probabilityDotProduct(SAD, W6))
           }
+
+      it("extract non-letters and be able to put them back in")
+      {
+          val text= "Hello, Virginia, this should be preserved exactly--as intended!!!"
+          val nonLetterList = FrequencyAnalyzer.extractNonLetterPositionList(text)
+          //println("nonletter list:" + nonLetterList.mkString("") )
+          val textWOspaces  =    FrequencyAnalyzer.dropNonLettersForceUpper(text).replaceAll(" ", "")
+          //println("text w/o spaces: " + textWOspaces)
+          assert ( FrequencyAnalyzer.insertNonLetterPositionList(textWOspaces, nonLetterList)
+          ===  text)
+      }
 
   }
 }

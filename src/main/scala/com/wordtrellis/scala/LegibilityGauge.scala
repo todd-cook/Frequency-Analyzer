@@ -29,14 +29,13 @@
 package com.wordtrellis.scala;
 
 import scala.collection.immutable.List
-
 import scala.collection.mutable.HashSet
 
-   /**
+/**
  *
  *
  * @author Todd Cook
-* @since : Feb 20, 2010 11:28:08 AM
+ * @since : Feb 20, 2010 11:28:08 AM
  */
 
 class LegibilityGauge(val commonDigraphs: List[String],
@@ -94,21 +93,39 @@ class LegibilityGauge(val commonDigraphs: List[String],
 
     def loadDictionary(file: java.io.File): Unit = {
         var words = FrequencyAnalyzer.getWordList(file)
-        words.foreach(word => dictionary.add(word))
-        //todo implement filtering out small lengths
-        //             this.words = uw.getWordsOfLengthOrGreater(3); //4);
-        //        this.words = FrequencyAnalyzer.forceUpper(words);
+        words.filter(_.length > 4 ).foreach(word => dictionary.add(word))
     }
 
-    def scoreCandidate(c: Candidate): Int = {
-        var textList = c.getDecipheredText
-        var iScore = 0;
-        //search for words
+    def addWords (words:Iterable[String]) = words.foreach(w => dictionary.add(w) )
 
-        textList.foreach ( text =>{
+    def scoreText( text:String) :Int ={
+        var iScore = 0;
         commonWords.foreach(word => iScore += 6 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
         commonDigraphs.foreach(word => iScore += 4 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
         commonTrigraphs.foreach(word => iScore += 8 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
+      var words = text.split(" ")
+      words.foreach(w => {
+        if(dictionary.contains(w)){
+            var count = FrequencyAnalyzer.countOccurences(w, text)
+            iScore += 10 * count * w.length
+        }
+        })
+      iScore
+    }
+
+    // TODO rewrite method was unwieldly for large dictionaries
+    def scoreCandidate(c: Candidate): Int = {
+      var textList = c.getDecipheredText
+      var iScore = 0;
+      textList.foreach(text =>{
+        commonWords.foreach(word => iScore += 6 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
+        commonDigraphs.foreach(word => iScore += 4 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
+        commonTrigraphs.foreach(word => iScore += 8 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
+         //TODO
+        // for each text, split into chain of potential words, from length 4 to max length of dictionary entry
+        // for each potential word check to see if it's in the dictionary, if so score it
+        // although this operation mushrooms the candidates quickly it should be less than the dictionary...
+
         dictionary.foreach(word => {
             var count = FrequencyAnalyzer.countOccurences(word, text)
             iScore += 10 * count * word.length
@@ -116,7 +133,7 @@ class LegibilityGauge(val commonDigraphs: List[String],
                 c.addPossibleHints(FrequencyAnalyzer.extractMapping(c.getCharMap(), word));
             }
         })
-        })
+      })
         iScore
     }
 

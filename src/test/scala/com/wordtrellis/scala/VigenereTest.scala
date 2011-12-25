@@ -26,33 +26,53 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.wordtrellis.scala.gui.util
+package com.wordtrellis.scala
 
-import net.miginfocom.swing.MigLayout
-import scala.swing._
-
+import org.scalatest.junit.AssertionsForJUnit
+import org.junit.Assert._
+import org.junit.Test
 /**
- * Utility class for Mig Layout; allows MigLayout to be used easily by scala swing
  * @author Todd Cook
- * @since : Oct 11, 2009
+ * @since 12/24/11 5:55 PM
  */
 
-class MigPanel (layoutConstrains: String, colConstriants: String, rowConstraints: String)
-  extends Panel with SequentialContainer.Wrapper {
-  override lazy val peer = new javax.swing.JPanel(
-    new MigLayout(layoutConstrains, colConstriants, rowConstraints))
+class VigenereTest extends AssertionsForJUnit {
 
-  def this (layoutContraints: String) = this (layoutContraints, "", "")
+  val vg = new Vigenere(Vigenere.UPPER_ENGLISH)
+  val vg3 = new Vigenere(Vigenere.LOWER_ENGLISH)
+  val data = new TestData()
 
-  def size (x: Int, y: Int) = peer.setSize(x, y)
-
-  private def layoutManager = peer.getLayout.asInstanceOf[MigLayout]
-
-  protected def add (c: Component, l: String) {
-    peer.add(c.peer, l)
+  @Test
+  def testEncipher() {
+    assertEquals("TIKVMXANGVWFGFVKEYITKPTTRUCQX",
+                 vg.encipher("THISISAMESSAGETHATISIMPORTANT", "ABCDEF"))
+    assertEquals("BCDEFGHIJK", vg.encipher("ABCDEFGHIJ", "BBB"))
+    assertEquals("OLKLWJVRGQODKPGHTKCIXBUVIITXQZKLGK",
+                 vg.encipher("THISISANEXAMPLEOFTHEVIGENERECIPHER", "VECTOR"))
   }
 
-  protected def add (c: Component) {
-    peer.add(c.peer)
+  @Test
+  def testDecipher() {
+    assertEquals("THISISAMESSAGETHATISIMPORTANT", vg.decipher("TIKVMXANGVWFGFVKEYITKPTTRUCQX",
+                                                              "ABCDEF"))
+    assertEquals("ABCDEFGHIJ", vg.decipher("BCDEFGHIJK", "BBB"))
+    assertEquals("THISISANEXAMPLEOFTHEVIGENERECIPHER",
+                 vg.decipher("OLKLWJVRGQODKPGHTKCIXBUVIITXQZKLGK", "VECTOR"))
   }
+
+  @Test
+  def testDecipherLower() {
+    assertEquals("thisisanexampleofthevigenerecipher",
+                 vg3.decipher("olklwjvrgqodkpghtkcixbuviitxqzklgk", "vector"))
+  }
+
+  @Test
+  def testVigenere() {
+    val Key = "ABCD"
+    val Plaintext = "CRYPTOISSHORTFORCRYPTOGRAPHY"
+    val Ciphertext = "CSASTPKVSIQUTGQUCSASTPIUAQJB"
+    val vg = new Vigenere()
+    assertEquals(Ciphertext, vg.encipher(Plaintext, Key))
+  }
+
 }

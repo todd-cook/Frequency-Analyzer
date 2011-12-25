@@ -39,11 +39,20 @@ import scala.collection.mutable.ListBuffer
  * @author : Todd Cook
  * @since : Mar 6, 2010 2:56:55 PM
  */
-object SubstitutionBuilder {
-    val ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    val ALPHABETS2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ";
+class SubstitutionBuilder (val ALPHABET :String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ") {
 
-    def getSubstitutionAlphabet(iOffset: Int): HashMap[Char, Char] = {
+  val ALPHABETS2 = ALPHABET + ALPHABET
+
+  def encipher(plainText:String, offset :Int):String ={
+     encipherSubstituted(plainText, getSubstitutionAlphabet(offset))
+  }
+
+  def decipher(cipherText:String, offset :Int) :String = {
+     var trueOffset = ALPHABET.length - offset
+     encipherSubstituted(cipherText, getSubstitutionAlphabet(trueOffset))
+  }
+
+   def getSubstitutionAlphabet(iOffset: Int): HashMap[Char, Char] = {
         var substitutionMap = new HashMap[Char, Char]()
         (0 to ALPHABET.length - 1).foreach(x =>
                 substitutionMap.put(ALPHABET.charAt(x), ALPHABETS2.charAt(x + iOffset)))

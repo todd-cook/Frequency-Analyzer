@@ -26,33 +26,40 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.wordtrellis.scala.gui.util
+package com.wordtrellis.scala
 
-import net.miginfocom.swing.MigLayout
-import scala.swing._
+import javax.xml.soap.Text
 
 /**
- * Utility class for Mig Layout; allows MigLayout to be used easily by scala swing
+ * Helper class / Builder pattern for morphing text
  * @author Todd Cook
- * @since : Oct 11, 2009
+ * @since 12/24/11 5:42 PM
  */
 
-class MigPanel (layoutConstrains: String, colConstriants: String, rowConstraints: String)
-  extends Panel with SequentialContainer.Wrapper {
-  override lazy val peer = new javax.swing.JPanel(
-    new MigLayout(layoutConstrains, colConstriants, rowConstraints))
+class TextBuilder(val originalText: String) {
 
-  def this (layoutContraints: String) = this (layoutContraints, "", "")
+  private var morphedText = originalText
 
-  def size (x: Int, y: Int) = peer.setSize(x, y)
+  def text() = morphedText
 
-  private def layoutManager = peer.getLayout.asInstanceOf[MigLayout]
-
-  protected def add (c: Component, l: String) {
-    peer.add(c.peer, l)
+  def dropSpaces(): TextBuilder = {
+    morphedText = FrequencyAnalyzer.dropSpaces(morphedText)
+    return this;
   }
 
-  protected def add (c: Component) {
-    peer.add(c.peer)
+  def forceUpper() :TextBuilder ={
+    morphedText = FrequencyAnalyzer.forceUpper(morphedText)
+    return this;
   }
+
+  def dropNonLettersForceUpperPreserveSpaces () :TextBuilder ={
+    morphedText = FrequencyAnalyzer.dropNonLettersForceUpperPreserveSpaces(morphedText)
+    return this;
+  }
+
+  def dropNonLettersForceUpper ():TextBuilder ={
+    morphedText = FrequencyAnalyzer.dropNonLettersForceUpper(morphedText)
+      return this;
+  }
+
 }

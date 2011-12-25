@@ -158,7 +158,7 @@ object FrequencyAnalyzer {
     newValues.foldLeft(0d)(_.asInstanceOf[Double] + _.asInstanceOf[Double])
   }
 
-  def shiftDistributionValues (map: Map[Char, Double], rightShift: Int): Map[Char, Double] = {
+  def shiftDistributionValues (map: scala.collection.Map[Char, Double], rightShift: Int): Map[Char, Double] = {
     var sortedMapList = map.toList.sortBy(_._1) // it is critical to retain alphabetical order for the shift
     val (keys, values) = sortedMapList.unzip
     var newValues = values.slice(values.length - rightShift, values.length) ++ values.slice(0, values.length - rightShift);
@@ -283,6 +283,8 @@ object FrequencyAnalyzer {
     lines.foreach(x => buffer.append(dropNonLettersForceUpper(x)))
     buffer.toList
   }
+
+  def dropSpaces(text:String) = text.replaceAll("\\s", "")
 
   def getDigraphKCList (text: String): List[KeyCount[String]] = {
     var dpList = getDigraphPairs(text)
@@ -590,12 +592,6 @@ object FrequencyAnalyzer {
     spaceList.foreach(space => buf.insert(space, " "))
     buf.toString
   }
-
-  //  scala> insertListOfSpaces ("thisisabunchofshit", List(4,7,9,15,18))
-  //  res8: String = this is a bunch of shit
-  /**
-   * TODO make test for this
-   */
 
   def extractNonLetterPositionList (text: String): List[Tuple2[Int, Char]] = {
     var buf = new ListBuffer[Tuple2[Int, Char]]
