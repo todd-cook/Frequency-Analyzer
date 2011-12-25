@@ -7,7 +7,12 @@ and computational linguistics.
 
 Provided Examples
 -----------------
-* Automatic decryption and best candidate selection of substitution ciphers
+* Encryption/Decryption GUI for automatic encryption/decryption of substitution ciphers
+* Encryption help with/attempted automated decryption of Vigenere ciphers
+* Automatically solving a shredder puzzle (see unit test: ShredderSolverTest)
+
+Scala Examples
+-----------------
 * Scala Swing GUI for casual users
 * How to create a standalone executable jar file using Maven
 * Running Scala Spec tests inside Maven test phase
