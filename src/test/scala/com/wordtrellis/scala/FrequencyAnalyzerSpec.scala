@@ -45,6 +45,8 @@ class FrequencyAnalyzerSpec extends Spec with AssertionsForJUnit {
     var dictionary = new java.io.File(new java.io.File(".").getCanonicalPath()
                                         + java.io.File.separator + "resources"
                                         + java.io.File.separator + "words")
+    val alphabet="abcdefghijklmnopqrstuvwxyz"
+    val testSentence2 ="abbcccddddeeeeeffffffggggggghhhhhhhhiiiiiiiiijjjjjjjjjjkkkkkkkkkkkllllllllllllmmmmmmmmmmmmmnnnnnnnnnnnnnnoooooooooooooooppppppppppppppppqqqqqqqqqqqqqqqqqrrrrrrrrrrrrrrrrrrsssssssssssssssssssttttttttttttttttttttuuuuuuuuuuuuuuuuuuuuuvvvvvvvvvvvvvvvvvvvvvvwwwwwwwwwwwwwwwwwwwwwwwxxxxxxxxxxxxxxxxxxxxxxxxyyyyyyyyyyyyyyyyyyyyyyyyyzzzzzzzzzzzzzzzzzzzzzzzzzz"
 
     def createTestFrequencyMap_Character =
       FrequencyAnalyzer.filterOutNonUpperCase(FrequencyAnalyzer.getCharFrequencies(testSentence))
@@ -59,7 +61,7 @@ class FrequencyAnalyzerSpec extends Spec with AssertionsForJUnit {
         }
 
         it("reduce a text to a list of letters, ordered in descending frequency") {
-            assert(qBFLettersDescendingOrder === FrequencyAnalyzer.reduceToString(testSentence))
+            assert(alphabet.toUpperCase().reverse === FrequencyAnalyzer.reduceToString(testSentence2))
         }
 
         it("provide a KeyCount list of letters no longer than the length of the alphabet") {
@@ -78,22 +80,38 @@ class FrequencyAnalyzerSpec extends Spec with AssertionsForJUnit {
 
         it("reduce a text to a list of digraphs") {
             var dfm = FrequencyAnalyzer.digraphFrequencies(testSentence)
-          assert("List(HE 2, TH 2, ZY 1, PS 1, MP 1, LA 1, IC 1, CK 1, DO 1, WN 1, JU 1, BR 1, " +
-                   "OV 1, ER 1, OW 1, OX 1, QU 1, FO 1, RO 1, AZ 1, OG 1, VE 1, UI 1, UM 1)"
-                   ===  dfm.getKeyCountList.toString )
-
+            val results = List(new KeyCount[String]("HE", 2), new KeyCount[String]("TH", 2),
+                               new KeyCount[String]("ZY", 1), new KeyCount[String]("PS", 1),
+                               new KeyCount[String]("MP", 1), new KeyCount[String]("LA", 1),
+                               new KeyCount[String]("IC", 1), new KeyCount[String]("CK", 1),
+                               new KeyCount[String]("DO", 1), new KeyCount[String]("WN", 1),
+                               new KeyCount[String]("JU", 1), new KeyCount[String]("BR", 1),
+                               new KeyCount[String]("OV", 1), new KeyCount[String]("ER", 1),
+                               new KeyCount[String]("OW", 1), new KeyCount[String]("OX", 1),
+                               new KeyCount[String]("QU", 1), new KeyCount[String]("FO", 1),
+                               new KeyCount[String]("UM", 1) , new KeyCount[String]("VE", 1),
+                               new KeyCount[String]("UI", 1), new KeyCount[String]("OG", 1),
+                               new KeyCount[String]("AZ", 1) , new KeyCount[String]("RO", 1))
+            assert(results.toSet === dfm.getKeyCountList.toSet)
         }
 
         it("reduce a text to a list of repeated digraphs") {
-            assert("HE 2,TH 2" === FrequencyAnalyzer.getRepeatedDigraphs(testSentence).mkString(",") )
+          val result = List(new KeyCount[String]("HE",2), new KeyCount[String]("TH",2) )
+            assert(result.toSet === FrequencyAnalyzer.getRepeatedDigraphs(testSentence).toSet)
         }
 
         it("reduce a text to list of mirrored digraphs") {
             assert(FrequencyAnalyzer.getMirroredKeys(FrequencyAnalyzer.getDigraphKCList(testSentence)).size === 0)
             var dkcList = FrequencyAnalyzer.getMirroredKeys(FrequencyAnalyzer.getDigraphKCList(testSentence +
                     " palindromic digraphs are rare but they often indicate vowels."))
-                assert("RA 2, RE 2, AR 2, LA 1, AP 1, ER 1, VO 1, OV 1, OF 1, AL 1, PA 1, FO 1"
-                    ===  dkcList.mkString(", ") )
+
+            val result = List ( new KeyCount[String]("RA",2),new KeyCount[String]("RE", 2),
+                                new KeyCount[String]("AR", 2),new KeyCount[String]("LA", 1),
+                                new KeyCount[String]("AP", 1),new KeyCount[String]("ER", 1),
+                                new KeyCount[String]("VO", 1),new KeyCount[String]("OV", 1),
+                                new KeyCount[String]("OF", 1), new KeyCount[String]("AL", 1),
+                                new KeyCount[String]("PA", 1), new KeyCount[String]("FO", 1))
+                assert(result.toSet   ===  dkcList.toSet )
         }
 
 
@@ -236,10 +254,23 @@ class FrequencyAnalyzerSpec extends Spec with AssertionsForJUnit {
 
         it("reduce a file to a FrequencyMap of word lengths") {
             var wordLengths = FrequencyAnalyzer.getWordLengths(dictionary)
-            assert("9 62615,8 62334,10 54667,7 53944,11 46510,6 41699,12 37583,13 27976,5 25104," +
-                     "14 19326,4 13208,15 12160,16 7137,3 6221,17 4014,18 2011,2 1271,19 1055," +
-                     "20 508,21 240,22 103,1 53,23 50,24 19,25 9,27 3,29 2,26 2,28 2,30 1,31 1,45 1"
-                    === wordLengths.getKeyCountList.mkString(","))
+            val result = List( new KeyCount[Int](9, 62615) , new KeyCount[Int](8, 62334) ,
+            new KeyCount[Int](10, 54667), new KeyCount[Int](7 ,53944),
+            new KeyCount[Int]( 11, 46510), new KeyCount[Int](6 ,41699),
+            new KeyCount[Int](12, 37583), new KeyCount[Int](13, 27976),
+            new KeyCount[Int](5, 25104), new KeyCount[Int]( 14, 19326),
+            new KeyCount[Int](4, 13208), new KeyCount[Int](15, 12160),
+            new KeyCount[Int](16, 7137), new KeyCount[Int](3 ,6221),
+            new KeyCount[Int](17, 4014), new KeyCount[Int](18 ,2011),
+            new KeyCount[Int](2, 1271), new KeyCount[Int](19 ,1055),
+            new KeyCount[Int](20, 508), new KeyCount[Int](21, 240),
+            new KeyCount[Int](22, 103), new KeyCount[Int](1, 53),
+            new KeyCount[Int](23, 50), new KeyCount[Int](24, 19),
+            new KeyCount[Int](25, 9), new KeyCount[Int](27, 3),
+            new KeyCount[Int](29, 2), new KeyCount[Int](26, 2),
+            new KeyCount[Int](28, 2), new KeyCount[Int](30, 1),
+            new KeyCount[Int](31, 1), new KeyCount[Int](45, 1))
+            assert(result.toSet === wordLengths.getKeyCountList.toSet )
         }
 
         it ("reduce a file to a list of words of a given length")  {
@@ -267,12 +298,20 @@ class FrequencyAnalyzerSpec extends Spec with AssertionsForJUnit {
       it("extract non-letters and be able to put them back in")
       {
           val text= "Hello, Virginia, this should be preserved exactly--as intended!!!"
-          val nonLetterList = FrequencyAnalyzer.extractNonLetterPositionList(text)
+//          val nonLetterList = FrequencyAnalyzer.extractNonLetterPositionList(text)
           //println("nonletter list:" + nonLetterList.mkString("") )
-          val textWOspaces  =    FrequencyAnalyzer.dropNonLettersForceUpper(text).replaceAll(" ", "")
+      //    val textWOspaces  =    FrequencyAnalyzer.dropNonLetters(text).replaceAll(" ", "")
+//          val textWOspaces  =    new TextBuilder(text).dropNonLetters().text()
           //println("text w/o spaces: " + textWOspaces)
-          assert ( FrequencyAnalyzer.insertNonLetterPositionList(textWOspaces, nonLetterList)
-          ===  text)
+//          assert ( FrequencyAnalyzer.insertNonLetterPositionList(textWOspaces, nonLetterList)   ===  text)
+        val nonLetterList = FrequencyAnalyzer.extractNonLetterPositionList(text)
+                val textLettersOnly =FrequencyAnalyzer.dropSpaces( FrequencyAnalyzer.dropNonLettersForceUpper(text))
+
+        val result =FrequencyAnalyzer.insertNonLetterPositionList(textLettersOnly, nonLetterList)
+
+          assert ( result  ===  text.toUpperCase())
+
+
       }
 
   }

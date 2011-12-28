@@ -28,41 +28,22 @@
 
 package com.wordtrellis.scala
 
+import org.scalatest.junit.AssertionsForJUnit
+import org.junit.Test
+import java.io.File
+
 /**
- * Helper class / Builder pattern for morphing text
  * @author Todd Cook
- * @since 12/24/11 5:42 PM
+ * @since 12/24/11 5:55 PM
  */
 
-class TextBuilder(val originalText: String) {
+class FrequencyAnalyzerTest extends AssertionsForJUnit {
 
-  private var morphedText = originalText
-
-  def text() = morphedText
-
-  def dropSpaces(): TextBuilder = {
-    morphedText = FrequencyAnalyzer.dropSpaces(morphedText)
-    return this;
+  @Test
+  def testSegmentationMap() {
+    val dictionaryFile = new File(new File(".").getCanonicalPath() + "/resources/words")
+    val segmentationMap = FrequencyAnalyzer.getSegmentationMap(dictionaryFile)
+    segmentationMap.keys.toList.sortWith(_ < _).foreach(k =>
+                         println(k + " : " + segmentationMap.get(k).toList.mkString(",")))
   }
-
-  def forceUpper() :TextBuilder ={
-    morphedText = FrequencyAnalyzer.forceUpper(morphedText)
-    return this;
-  }
-
-  def dropNonLettersForceUpperPreserveSpaces () :TextBuilder ={
-    morphedText = FrequencyAnalyzer.dropNonLettersForceUpperPreserveSpaces(morphedText)
-    return this;
-  }
-
-  def dropNonLettersForceUpper ():TextBuilder ={
-    morphedText = FrequencyAnalyzer.dropNonLettersForceUpper(morphedText)
-      return this;
-  }
-
-  def dropNonLetters ():TextBuilder ={
-    morphedText = FrequencyAnalyzer.dropNonLetters(morphedText)
-      return this;
-  }
-
 }

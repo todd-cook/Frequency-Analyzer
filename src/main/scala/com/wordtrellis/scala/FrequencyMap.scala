@@ -107,7 +107,7 @@ class FrequencyMap[T](val items: List[T]) {
     def addAll(items: List[T]): Unit = {items.foreach(x => add(x))}
 
     // returns list of keys, sorted by frequency
-    def getKeyList: List[T] = for{kc <- getKeyCountList(); k = kc.key} yield (k)
+    def getKeyList: List[T] = for{kc <- getKeyCountList().sortWith(_.count > _.count); k = kc.key} yield (k)
     // returns list of values, sorted by frequency
     def getValueList: List[Int] = for{kc <- getKeyCountList(); k = kc.count} yield (k)
 

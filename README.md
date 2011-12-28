@@ -12,7 +12,8 @@ Provided Examples
 * Automatically solving a shredder puzzle (see unit test: ShredderSolverTest)
 
 Scala Examples
------------------
+--------------
+* Supporting Scala 2.9.0.RC4, scalatest 1.4.RC4
 * Scala Swing GUI for casual users
 * How to create a standalone executable jar file using Maven
 * Running Scala Spec tests inside Maven test phase

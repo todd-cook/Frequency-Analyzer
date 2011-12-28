@@ -32,6 +32,7 @@ import collection.immutable.List
 import collection.mutable.{HashSet, ListBuffer, HashMap}
 import io.BufferedSource
 import java.io.ByteArrayInputStream
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Utility class designed for solving ciphers
@@ -228,6 +229,21 @@ object FrequencyAnalyzer {
     buffer.toString.replaceAll("\\s+", " ") // replace multiple spaces with a single space
   }
 
+  val alphabetsPlusSpace = UPPERALPHABETPLUSSPACE + UPPERALPHABET.toLowerCase()
+
+  def dropNonLetters  (text: String): String = {
+    var buffer = new StringBuilder()
+    text.toCharArray.toList.foreach(x =>
+                                                  if (alphabetsPlusSpace.indexOf(x) != -1) {
+                                                    buffer.append(x)
+                                                  }
+                                                  else {
+                                                    buffer.append(" ")
+                                                  })
+    buffer.toString.replaceAll("\\s+", " ") // replace multiple spaces with a single space
+  }
+
+
   val UPPERALPHABETPLUSSPACE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
 
   // TODO consider if there's an easier way to do this; eg. get Nonletterlist... of recent dev
@@ -364,6 +380,30 @@ object FrequencyAnalyzer {
     fm
   }
 
+  /**
+   * This may take a while to generate, but the results are worth caching; since the results
+   * indicate how many possible word lengths can be created from and initial seed letter
+   */
+  def getSegmentationMap(dictionaryFile: java.io.File) :Map[Char, List[Int]] ={
+    val bs = loadFile (dictionaryFile)
+    val linesIt = bs.getLines()
+    val segmentationMap = new HashMap[Char, List[Int]]()
+    while (linesIt.hasNext) {
+     val line = dropNonLettersForceUpper(linesIt.next)
+      if (!segmentationMap.contains (line(0))  ){
+            segmentationMap.put(line(0), List( line.length))
+      } else {
+        val tmpList = segmentationMap.get(line(0)).get
+        if ( !tmpList.contains(line.length)){
+         segmentationMap.put(line(0), tmpList::: List(line.length()))
+        }
+      }
+  }
+    segmentationMap.remove(' ')
+   segmentationMap.toMap
+  }
+
+
   def reduceToConsonantVowels (word: String): String = {
     var sb = new StringBuilder()
     dropNonLettersForceUpper(word).toCharArray.foreach(x =>
@@ -466,7 +506,7 @@ object FrequencyAnalyzer {
         buffer.append(forceUpper(line))
       }
     }
-    buffer.toList.removeDuplicates
+    buffer.toList.distinct
   }
 
   def getWords (bs: BufferedSource): List[String] = {
