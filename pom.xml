@@ -8,15 +8,8 @@
     <version>1.0</version>
     <packaging>jar</packaging>
     <properties>
-        <scala.version>2.9.0.RC4</scala.version>
-        <scalatest.artifact>scalatest_2.9.0.RC4</scalatest.artifact>
-        <scalatest.version>1.4.RC4</scalatest.version>
-        <!--previous working combo -->
-        <!--<scala.version>2.8.1.RC4</scala.version>-->
-        <!--<scalatest.version>1.3</scalatest.version>-->
-        <!--Not quite ready for prime time-->
-        <!--<scala.version>2.9.0.RC1</scala.version>-->
-        <!--<scalatest.version>1.5-SNAPSHOT</scalatest.version>-->
+        <scala.version>2.11.4</scala.version>
+        <scalaswing.version>2.11.0-M7</scalaswing.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
@@ -28,21 +21,21 @@
         </dependency>
         <dependency>
             <groupId>org.scalatest</groupId>
-            <artifactId>${scalatest.artifact}</artifactId>
-            <version>${scalatest.version}</version>
-            <scope>provided</scope>
+            <artifactId>scalatest_2.11</artifactId>
+            <version>3.0.0-M15</version>
+            <scope>test</scope>
         </dependency>
         <!-- To make GUIs less painful -->
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-swing</artifactId>
-            <version>${scala.version}</version>
+            <version>${scalaswing.version}</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
+         <dependency>
             <groupId>com.miglayout</groupId>
-            <artifactId>miglayout</artifactId>
-            <version>3.7</version>
+            <artifactId>miglayout-swing</artifactId>
+            <version>5.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -163,21 +156,4 @@
             </roles>
         </developer>
     </developers>
-    <repositories>
-        <repository>
-            <id>scala-tools.org-repo-snapshots</id>
-            <name>http://www.scala-tools.org/repo-snapshots</name>
-            <url>http://www.scala-tools.org/repo-snapshots</url>
-        </repository>
-        <repository>
-            <id>http-www.scala-tools.org-repo-releases</id>
-            <name>http://www.scala-tools.org/repo-releases</name>
-            <url>http://www.scala-tools.org/repo-releases</url>
-        </repository>
-        <repository>
-            <id>http-repo1.maven.org-maven2</id>
-            <name>http://repo1.maven.org/maven2</name>
-            <url>http://repo1.maven.org/maven2</url>
-        </repository>
-    </repositories>
 </project>
