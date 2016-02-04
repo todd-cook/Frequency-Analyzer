@@ -13,7 +13,7 @@ Provided Examples
 
 Scala Examples
 --------------
-* Supporting Scala 2.9.0.RC4, scalatest 1.4.RC4
+* Supporting Scala 2.11.4, scalatest 2.11 3.0.0
 * Scala Swing GUI for casual users
 * How to create a standalone executable jar file using Maven
 * Running Scala Spec tests inside Maven test phase
@@ -43,7 +43,6 @@ just double-clicking on the jar file. This jar also contains all the Scala and S
 
 `frequency-analyzer.jar` is the library jar and it only contains the project's core files.
 
-
 Related links
 -------------
 * `Scala Test` <http://scalatest.org>
@@ -54,6 +53,6 @@ Related links
  To Do:
 ------
 * Enhance the Scala to Java interface so that this library provides a common library to Java programs.
-* Provide a separate standalone Java program example that uses the library (in progress).
+* Provide a separate standalone program example that uses the library
 * More unit tests.
 * Expand multilingual character support.
