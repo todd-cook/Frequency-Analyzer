@@ -50,6 +50,10 @@ object FrequencyAnalyzer {
 
   val UPPERALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
+  val UPPERALPHABETPLUSSPACE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+
+  val alphabetsPlusSpace = "ABCDEFGHIJKLMNOPQRSTUVWXYZ " + "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toLowerCase()
+
   val CONSONANTS = "BCDFGHJKLMNPQRSTVWXZ"
   val VOWELS = "AEIOUY"
   val CONSONANT = "C"
@@ -229,8 +233,6 @@ object FrequencyAnalyzer {
     buffer.toString.replaceAll("\\s+", " ") // replace multiple spaces with a single space
   }
 
-  val alphabetsPlusSpace = UPPERALPHABETPLUSSPACE + UPPERALPHABET.toLowerCase()
-
   def dropNonLetters  (text: String): String = {
     var buffer = new StringBuilder()
     text.toCharArray.toList.foreach(x =>
@@ -244,7 +246,6 @@ object FrequencyAnalyzer {
   }
 
 
-  val UPPERALPHABETPLUSSPACE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
 
   // TODO consider if there's an easier way to do this; eg. get Nonletterlist... of recent dev
   def dropNonLettersForceUpperPreserveSpaces (text: String): String = {
