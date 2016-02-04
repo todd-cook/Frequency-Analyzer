@@ -28,7 +28,7 @@
 
 package com.wordtrellis.scala;
 
-import org.scalatest.Spec
+import org.scalatest.FunSpec
 
 
 /**
@@ -36,7 +36,7 @@ import org.scalatest.Spec
  * @author : Todd Cook
  * @since : Mar 6, 2010 5:58:04 PM
  */
-class KeyCountSpec extends Spec
+class KeyCountSpec extends FunSpec
 {
     describe("A KeyCount object should: ") {
 

@@ -44,15 +44,15 @@ import junit.framework.TestCase
 class TestSpecs extends TestCase {
 
   def testKeyCount () {
-    new KeyCountSpec().execute
+    new KeyCountSpec().execute()
   }
 
   def testFrequencyMap () {
-    new FrequencyMapSpec().execute
+    new FrequencyMapSpec().execute()
   }
 
   def testCryptoFrequencies () {
-    new FrequencyAnalyzerSpec().execute
+    new FrequencyAnalyzerSpec().execute()
   }
 
 }

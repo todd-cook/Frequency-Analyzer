@@ -28,7 +28,9 @@
 
 package com.wordtrellis.scala
 
-import org.scalatest.{TestFailedException, Spec}
+
+
+import org.scalatest.FunSpec
 import org.scalatest.junit.AssertionsForJUnit
 import org.junit.Assert._
 import org.junit.Test
@@ -38,7 +40,7 @@ import org.junit.Test
  * @author : Todd Cook
  * @since : Mar 7, 2010 5:37:42 PM
  */
-class FrequencyAnalyzerSpec extends Spec with AssertionsForJUnit {
+class FrequencyAnalyzerSpec extends FunSpec with AssertionsForJUnit {
 
     val testSentence = "the quick brown fox jumps over the lazy dog"
     val qBFLettersDescendingOrder = "OEHURTWPGVIAFNXSZDKCBQLMJY"

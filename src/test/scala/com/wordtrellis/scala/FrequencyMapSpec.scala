@@ -28,14 +28,14 @@
 
 package com.wordtrellis.scala;
 
-import org.scalatest.Spec
+import org.scalatest.FunSpec
 
 /**
  * Spec Test for FrequencyMap
  * @author : Todd Cook
  * @since : Mar 6, 2010 5:10:07 PM
  */
-class FrequencyMapSpec extends Spec {
+class FrequencyMapSpec extends FunSpec {
 
     val qBFLettersDescendingOrder = "OEHURTWPGVIAFNXSZDKCBQLMJY"
     val data = new TestData()
