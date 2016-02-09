@@ -8,7 +8,7 @@
     <version>1.0</version>
     <packaging>jar</packaging>
     <properties>
-        <scala.version>2.11.4</scala.version>
+        <scala.version>2.11.7</scala.version>
         <scalaswing.version>2.11.0-M7</scalaswing.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -20,10 +20,20 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>org.scalactic</groupId>
+            <artifactId>scalactic_2.11</artifactId>
+            <version>2.2.6</version>
+        </dependency>
+        <dependency>
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest_2.11</artifactId>
-            <version>3.0.0-M15</version>
+            <version>2.2.6</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-actor_2.11</artifactId>
+            <version>2.4.1</version>
         </dependency>
         <!-- To make GUIs less painful -->
         <dependency>
@@ -52,6 +62,16 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>1.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-slf4j_2.11</artifactId>
+            <version>2.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.0.9</version>
         </dependency>
     </dependencies>
     <build>
@@ -149,7 +169,7 @@
             <id>Todd</id>
             <name>Cook</name>
             <email>todd.g.cook AT gmail.com</email>
-            <url>http://cookconsulting.com</url>
+            <url>http://wordtrellis.com</url>
             <roles>
                 <role>architect</role>
                 <role>developer</role>
