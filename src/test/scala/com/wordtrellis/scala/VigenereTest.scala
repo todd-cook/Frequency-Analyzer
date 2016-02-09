@@ -37,33 +37,27 @@ import org.junit.Test
  */
 
 class VigenereTest extends AssertionsForJUnit {
-
-  val vg = new Vigenere(Vigenere.UPPER_ENGLISH)
-  val vg3 = new Vigenere(Vigenere.LOWER_ENGLISH)
+//
+//  val vg = new Vigenere(Vigenere.UPPER_ENGLISH)
+//  val vg3 = new Vigenere(Vigenere.LOWER_ENGLISH)
   val data = new TestData()
 
   @Test
   def testEncipher() {
     assertEquals("TIKVMXANGVWFGFVKEYITKPTTRUCQX",
-                 vg.encipher("THISISAMESSAGETHATISIMPORTANT", "ABCDEF"))
-    assertEquals("BCDEFGHIJK", vg.encipher("ABCDEFGHIJ", "BBB"))
+      Vigenere.encipher("THISISAMESSAGETHATISIMPORTANT", "ABCDEF"))
+    assertEquals("BCDEFGHIJK", Vigenere.encipher("ABCDEFGHIJ", "BBB"))
     assertEquals("OLKLWJVRGQODKPGHTKCIXBUVIITXQZKLGK",
-                 vg.encipher("THISISANEXAMPLEOFTHEVIGENERECIPHER", "VECTOR"))
+      Vigenere.encipher("THISISANEXAMPLEOFTHEVIGENERECIPHER", "VECTOR"))
   }
 
   @Test
   def testDecipher() {
-    assertEquals("THISISAMESSAGETHATISIMPORTANT", vg.decipher("TIKVMXANGVWFGFVKEYITKPTTRUCQX",
-                                                              "ABCDEF"))
-    assertEquals("ABCDEFGHIJ", vg.decipher("BCDEFGHIJK", "BBB"))
+    assertEquals("THISISAMESSAGETHATISIMPORTANT",
+      Vigenere.decipher("TIKVMXANGVWFGFVKEYITKPTTRUCQX", "ABCDEF"))
+    assertEquals("ABCDEFGHIJ", Vigenere.decipher("BCDEFGHIJK", "BBB"))
     assertEquals("THISISANEXAMPLEOFTHEVIGENERECIPHER",
-                 vg.decipher("OLKLWJVRGQODKPGHTKCIXBUVIITXQZKLGK", "VECTOR"))
-  }
-
-  @Test
-  def testDecipherLower() {
-    assertEquals("thisisanexampleofthevigenerecipher",
-                 vg3.decipher("olklwjvrgqodkpghtkcixbuviitxqzklgk", "vector"))
+      Vigenere.decipher("OLKLWJVRGQODKPGHTKCIXBUVIITXQZKLGK", "VECTOR"))
   }
 
   @Test
@@ -71,8 +65,8 @@ class VigenereTest extends AssertionsForJUnit {
     val Key = "ABCD"
     val Plaintext = "CRYPTOISSHORTFORCRYPTOGRAPHY"
     val Ciphertext = "CSASTPKVSIQUTGQUCSASTPIUAQJB"
-    val vg = new Vigenere()
-    assertEquals(Ciphertext, vg.encipher(Plaintext, Key))
+
+    assertEquals(Ciphertext, Vigenere.encipher(Plaintext, Key))
   }
 
 }

@@ -36,15 +36,15 @@ package com.wordtrellis.scala
  */
 
 object Vigenere {
-  val UPPER_ENGLISH = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  val LOWER_ENGLISH = "abcdefghijklmnopqrstuvwxyz";
+
+  val UPPER_ENGLISH = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     /**
      * Most often the key length will be the first or the first couple matches
      */
  def guessKeyLength (text: String) :List[Tuple2[Int, Int]] = {
         var myRange = (2 to 26).toList
-        var tupleList = for (mySeed <- myRange)yield (shiftCount(text,mySeed) )
+        var tupleList = for (mySeed <- myRange)yield shiftCount(text,mySeed)
         tupleList.sortWith( _._2  > _._2)
     }
 
@@ -54,10 +54,10 @@ object Vigenere {
     * then there is a match.
     */
     def shiftCount (text:String, shift:Int) :Tuple2[Int, Int] = {
-        var result = 0;
+        var result = 0
         // shift the text off the back onto the front, so no matches are lost
         var shiftedText = shiftText(text, shift)
-        var ii = 0;
+        var ii = 0
         text.toList.foreach (letter => {
             if (letter == shiftedText(ii)){
                 result = result + 1;
@@ -81,27 +81,25 @@ object Vigenere {
         }
         buf.toString
     }
-}
 
-class Vigenere (val charset: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ") {
-  val CHARS = charset.toList
+  val CHARS = UPPER_ENGLISH.toList
 
   def encipher (text: String, key: String): String = {
     convert(text, key.toList.map(CHARS.indexOf(_)));
   }
 
   def decipher (text: String, key: String) = {
-    convert(text, key.toList.map(CHARS.indexOf(_)).map((26 - _)))
+    convert(text, key.toList.map(CHARS.indexOf(_)).map(26 - _))
   }
 
   private def convert (text: String, key: List[Int]): String = {
-    var PLAINTEXT = text.toList.map(CHARS.indexOf(_));
+    var PLAINTEXT = text.toList.map(CHARS.indexOf(_))
     var ii = 0;
-    var buf = new StringBuilder();
+    var buf = new StringBuilder()
     PLAINTEXT.foreach(letter => {
       buf.append(CHARS((key(ii % key.length) + letter) % 26))
       ii = ii + 1
-    });
+    })
     buf.toString
   }
 }

@@ -40,8 +40,8 @@ import collection.mutable.ListBuffer
 
 class VigenereSolverTest extends AssertionsForJUnit {
 
-  val vg = new Vigenere(Vigenere.UPPER_ENGLISH)
-  val vg3 = new Vigenere(Vigenere.LOWER_ENGLISH)
+//  val vg = new Vigenere(Vigenere.UPPER_ENGLISH)
+//  val vg3 = new Vigenere(Vigenere.LOWER_ENGLISH)
   val data = new TestData()
 
   val textOne = "Holmes had been seated for some hours in silence with his long thin back curved over a chemical vessel in which he was brewing a particular lymal odorous product His head was sunk upon his breast and he looked from my point of view like a strange lank bird with dull grey plumage and a black top knot So watson said he suddenly you do not propose to invest in south african securities";
@@ -52,10 +52,10 @@ class VigenereSolverTest extends AssertionsForJUnit {
 
   @Test
   def testEncipher2 () {
-    assertEquals("ocwyikoooniwugpmxwktzdwgtssayjzwyemdlbnqaaavsuwdvbrflauplooubfgqhgcscmgzlatoedcsdeidpbhtmuovpiekifpimfnoamvlpqfxejsmxmpgkccaykwfzpyuavtelwhrhmwkbbvgtguvtefjlodfefkvpxsgrsorvgtajbsauhzrzalkwuowhgedefnswmrciwcpaaavogpdnfpktdbalsisurlnpsjyeatcuceesohhdarkhwotikbroqrdfmzghgucebvgwcdqxgpbgqwlpbdaylooqdmuhbdqgmyweuik",
-                 vg3.encipher(textOne.replaceAll("\\s", "").toLowerCase(), "holmes"))
-    assertEquals("vvhqwvvrhmusgjgthkihtssejchlsfcbgvwcrlryqtfsvgahwkcuhwauglqhnslrljshbltspisprdxljsveeghlqwkasskuwepwqtwvspgoelkcqyfnsvwljsniqkgnrgybwlwgoviokhkazkqkxzgyhcecmeiujoqkwfwvefqhkijrclrlkbienqfrjljsdhgrhlsfqtwlauqrhwdmwlgusgikkflryvcwvspgpmlkassjvoqxeggveyggzmljcxxljsvpaivwikvrdrygfrjljslveggveyggeiapuuisfpbtgnwwmuczrvtwglrwugumnczvile",
-                 vg3.encipher(textTwo.replaceAll("\\s", "").toLowerCase(), "codes"))
+    assertEquals("OCWYIKOOONIWUGPMXWKTZDWGTSSAYJZWYEMDLBNQAAAVSUWDVBRFLAUPLOOUBFGQHGCSCMGZLATOEDCSDEIDPBHTMUOVPIEKIFPIMFNOAMVLPQFXEJSMXMPGKCCAYKWFZPYUAVTELWHRHMWKBBVGTGUVTEFJLODFEFKVPXSGRSORVGTAJBSAUHZRZALKWUOWHGEDEFNSWMRCIWCPAAAVOGPDNFPKTDBALSISURLNPSJYEATCUCEESOHHDARKHWOTIKBROQRDFMZGHGUCEBVGWCDQXGPBGQWLPBDAYLOOQDMUHBDQGMYWEUIK",
+      Vigenere.encipher(textOne.replaceAll("\\s", "").toUpperCase(), "HOLMES"))
+    assertEquals("VVHQWVVRHMUSGJGTHKIHTSSEJCHLSFCBGVWCRLRYQTFSVGAHWKCUHWAUGLQHNSLRLJSHBLTSPISPRDXLJSVEEGHLQWKASSKUWEPWQTWVSPGOELKCQYFNSVWLJSNIQKGNRGYBWLWGOVIOKHKAZKQKXZGYHCECMEIUJOQKWFWVEFQHKIJRCLRLKBIENQFRJLJSDHGRHLSFQTWLAUQRHWDMWLGUSGIKKFLRYVCWVSPGPMLKASSJVOQXEGGVEYGGZMLJCXXLJSVPAIVWIKVRDRYGFRJLJSLVEGGVEYGGEIAPUUISFPBTGNWWMUCZRVTWGLRWUGUMNCZVILE",
+      Vigenere.encipher(textTwo.replaceAll("\\s", "").toUpperCase(), "CODES"))
   }
 
   @Test
@@ -69,7 +69,7 @@ class VigenereSolverTest extends AssertionsForJUnit {
   def guessKey(){
 
       val cleanText = FrequencyAnalyzer.swallowSpaces(FrequencyAnalyzer.dropNonLettersForceUpper (data.chapterText))
-      val cipherText = vg.encipher(cleanText, "HOLIDAY")
+      val cipherText = Vigenere.encipher(cleanText, "HOLIDAY")
       println("enciphering with key: HOLIDAY")
       println(Vigenere.guessKeyLength(cipherText) )
       // Ouch, the key length is the third value, but notice the wide spread that follows after it
@@ -81,7 +81,7 @@ class VigenereSolverTest extends AssertionsForJUnit {
   @Test
   def guessKey2(){
       val cleanText = FrequencyAnalyzer.swallowSpaces(FrequencyAnalyzer.dropNonLettersForceUpper (textOne ))
-      val cipherText = vg.encipher(cleanText, "HOLMES")
+      val cipherText = Vigenere.encipher(cleanText, "HOLMES")
       println("enciphering with key: HOLMES")
       println(Vigenere.guessKeyLength(cipherText) )
       val (keyLengths, occurrences) = Vigenere.guessKeyLength(cipherText).unzip
