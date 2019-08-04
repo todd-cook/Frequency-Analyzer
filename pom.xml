@@ -8,7 +8,7 @@
     <version>1.0</version>
     <packaging>jar</packaging>
     <properties>
-        <scala.version>2.11.7</scala.version>
+        <scala.version>2.13.0</scala.version>
         <scalaswing.version>2.11.0-M7</scalaswing.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -26,8 +26,8 @@
         </dependency>
         <dependency>
             <groupId>org.scalatest</groupId>
-            <artifactId>scalatest_2.11</artifactId>
-            <version>2.2.6</version>
+            <artifactId>scalatest_2.13</artifactId>
+            <version>3.0.8</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -104,8 +104,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -168,7 +168,6 @@
         <developer>
             <id>Todd</id>
             <name>Cook</name>
-            <email>todd.g.cook AT gmail.com</email>
             <url>http://wordtrellis.com</url>
             <roles>
                 <role>architect</role>

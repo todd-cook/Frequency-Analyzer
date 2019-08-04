@@ -1,56 +1,22 @@
-/*
- * Copyright (c) 2010-2011, Todd Cook.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- *
- *     * Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright notice,
- *       this list of conditions and the following disclaimer in the documentation
- *       and/or other materials provided with the distribution.
- *     * Neither the name of the <ORGANIZATION> nor the names of its contributors
- *       may be used to endorse or promote products derived from this software
- *       without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+
 
 package com.wordtrellis.scala
 
-import org.scalatest.junit.AssertionsForJUnit
-import org.junit.Test
+
+import org.scalatest.FlatSpec
 
 /**
- * Simple test data place holder class
- *
- * @author Todd Cook
- * @since 4/21/11 9:38 PM
- */
-class TestData extends AssertionsForJUnit {
-
-  /**
-   *  Unfortunately, it needs to fake that it's a unit test; otherwise it registers a failure;
-   *  in some configurations...
-   */
-  @Test
-  def doNothingOnce () {
-    println()
-  }
+  * Simple test data place holder class
+  *
+  * @author Todd Cook
+  *
+  */
+class TestData extends FlatSpec {
 
   val testSentence = "the quick brown fox jumps over the lazy dog"
   // Chapter one of HuckleberryFinn
-  val chapterText = """YOU don't know about me without you have read a book by the name of The
+  val chapterText =
+    """YOU don't know about me without you have read a book by the name of The
         Adventures of Tom Sawyer; but that ain't no matter.  That book was made
         by Mr. Mark Twain, and he told the truth, mainly.  There was things which
         he stretched, but mainly he told the truth.  That is nothing.  I never
@@ -160,6 +126,15 @@ class TestData extends AssertionsForJUnit {
         "me-yow! me-yow!" as soft as I could, and then I put out the light and
         scrambled out of the window on to the shed.  Then I slipped down to the
         ground and crawled in among the trees, and, sure enough, there was Tom
-        Sawyer waiting for me.""";
+        Sawyer waiting for me."""
+
+  /**
+    * Unfortunately, it needs to fake that it's a unit test; otherwise it registers a failure;
+    * in some configurations...
+    */
+
+  def doNothingOnce() {
+    println()
+  }
 
 }

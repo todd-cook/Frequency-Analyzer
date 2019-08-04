@@ -1,108 +1,81 @@
-/*
-* Copyright (c) 2010-2011, Todd Cook.
-* All rights reserved.
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-*     * Redistributions of source code must retain the above copyright notice,
-*       this list of conditions and the following disclaimer.
-*     * Redistributions in binary form must reproduce the above copyright notice,
-*       this list of conditions and the following disclaimer in the documentation
-*       and/or other materials provided with the distribution.
-*     * Neither the name of the <ORGANIZATION> nor the names of its contributors
-*       may be used to endorse or promote products derived from this software
-*       without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-* ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-* WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
 
-package com.wordtrellis.scala;
 
-import math.Ordered
-import scala.collection.mutable.HashMap
+package com.wordtrellis.scala
+
 import scala.collection.immutable.List
+import scala.collection.mutable
+import scala.math.Ordered
 
 /**
- *
- * @author : Todd Cook
- * @since : Feb 20, 2010 11:28:08 AM
- */
+  *
+  * @author : Todd Cook
+  *
+  */
 class Candidate(val cipherText: List[String],
                 val decipheredText: List[String],
-                var charMap: HashMap[Char, Char],
+                var charMap: mutable.HashMap[Char, Char],
                 val useHints: Boolean,
                 var formula: String)
-        extends Ordered[Candidate]
-{
-    def this(cipherText: String, decipheredText: String)  {
-        this ( List(cipherText), List(decipheredText),
-               new HashMap[Char, Char](), false, "")
-    }
+  extends Ordered[Candidate] {
+  val possibleHints = new mutable.HashMap[Char, Char]()
+  var score = 0
 
-    def this(cipherText: List[String], decipheredText :List[String])  {
-        this (cipherText, decipheredText,
-              new HashMap[Char, Char](), false, "")
-    }
+  def this(cipherText: String, decipheredText: String) {
+    this(List(cipherText), List(decipheredText),
+      new mutable.HashMap[Char, Char](), false, "")
+  }
 
-    def this(cipherText: String, decipheredText: List[String], charMap: HashMap[Char, Char])  {
-        this (List(cipherText), decipheredText, charMap, false, "")
-    }
+  def this(cipherText: List[String], decipheredText: List[String]) {
+    this(cipherText, decipheredText,
+      new mutable.HashMap[Char, Char](), false, "")
+  }
 
-    def this (cipherTextList :List[String] , decipheredText: List[String], charMap: HashMap[Char, Char])   {
-        this ( cipherTextList  , decipheredText, charMap, false, "")
-    }
+  def this(cipherText: String, decipheredText: List[String], charMap: mutable.HashMap[Char, Char]) {
+    this(List(cipherText), decipheredText, charMap, false, "")
+  }
 
-  def this(){ this( List[String](), List[String]() )}
-  
+  def this(cipherTextList: List[String], decipheredText: List[String], charMap: mutable.HashMap[Char, Char]) {
+    this(cipherTextList, decipheredText, charMap, false, "")
+  }
 
-    var score = 0;
+  def this() {
+    this(List[String](), List[String]())
+  }
 
-    var possibleHints = new HashMap[Char, Char]()
+  // todo replace this in calling code with the VAL reference
+  def getDecipheredText: List[String] = decipheredText // .mkString(" ")
 
-    // todo replace this in calling code with the VAL reference
-    def getDecipheredText() = decipheredText// .mkString(" ")
+  def getDecipheredTextDisplay: String = decipheredText.mkString(" ")
 
-    def getDecipheredTextDisplay() = decipheredText.mkString(" ")
-    
-    def getCipherTextDisplay() = cipherText.mkString(" ")
+  def getCipherTextDisplay: String = cipherText.mkString(" ")
 
-    def getPossibleHints() = possibleHints
+  def getPossibleHints: mutable.HashMap[Char, Char] = possibleHints
 
-    def addPossibleHints(hints: HashMap[Char, Char ]) {
-        hints.keysIterator.toList.foreach(k => possibleHints.put(k, hints.get(k).get))
-    }
+  def addPossibleHints(hints: mutable.HashMap[Char, Char]): Unit = {
+    hints.keysIterator.toList.foreach(k => possibleHints.put(k, hints(k)))
+  }
 
-    override def toString(): String = {
-        "Candidate{" +
-                "cipherText='" + cipherText.mkString(" ") + '\'' +
-                ", decipheredText='" + decipheredText.mkString(" ") + '\'' +
-                ", formula='" + formula + '\'' +
-                ", score=" + score + '}'
-    }
+  override def toString: String = {
+    "Candidate{" +
+      "cipherText='" + cipherText.mkString(" ") + '\'' +
+      ", decipheredText='" + decipheredText.mkString(" ") + '\'' +
+      ", formula='" + formula + '\'' +
+      ", score=" + score + '}'
+  }
 
-    // Note: compare, equals and hashCode should all be similar in there tests
-    def compare(that: Candidate) = {
-        if (score > that.score) 1;
-        else if (score < that.score) -1;
-        else 0;
-    }
+  // Note: compare, equals and hashCode should all be similar in there tests
+  def compare(that: Candidate): Int = {
+    if (score > that.score) 1
+    else if (score < that.score) -1
+    else 0
+  }
 
-    override def equals(other: Any) = other match {
-        case that: Candidate => this.decipheredText == that.decipheredText
-        case _ => false
-    }
+  override def equals(other: Any): Boolean = other match {
+    case that: Candidate => this.decipheredText == that.decipheredText
+    case _ => false
+  }
 
-    override def hashCode() = decipheredText.hashCode
+  override def hashCode(): Int = decipheredText.hashCode
 
-    def getCharMap() = charMap
+  def getCharMap: mutable.HashMap[Char, Char] = charMap
 }

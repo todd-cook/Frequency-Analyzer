@@ -8,7 +8,6 @@ import java.math.BigInteger;
  * http://www.merriampark.com/comb.htm
  *
  * @author : Todd Cook
- * @since : Mar 13, 2010 5:02:36 PM
  */
 //--------------------------------------
 // Systematically generate combinations.
@@ -25,7 +24,7 @@ public class CombinationGenerator {
     // Constructor
     //------------
 
-    public CombinationGenerator (int n, int r) {
+    public CombinationGenerator(int n, int r) {
         if (r > n) {
             throw new IllegalArgumentException();
         }
@@ -46,42 +45,7 @@ public class CombinationGenerator {
     // Reset
     //------
 
-    public void reset () {
-        for (int i = 0; i < a.length; i++) {
-            a[i] = i;
-        }
-        numLeft = new BigInteger(total.toString());
-    }
-
-    //------------------------------------------------
-    // Return number of combinations not yet generated
-    //------------------------------------------------
-
-    public BigInteger getNumLeft () {
-        return numLeft;
-    }
-
-    //-----------------------------
-    // Are there more combinations?
-    //-----------------------------
-
-    public boolean hasMore () {
-        return numLeft.compareTo(BigInteger.ZERO) == 1;
-    }
-
-    //------------------------------------
-    // Return total number of combinations
-    //------------------------------------
-
-    public BigInteger getTotal () {
-        return total;
-    }
-
-    //------------------
-    // Compute factorial
-    //------------------
-
-    private static BigInteger getFactorial (int n) {
+    private static BigInteger getFactorial(int n) {
         BigInteger fact = BigInteger.ONE;
         for (int i = n; i > 1; i--) {
             fact = fact.multiply(new BigInteger(Integer.toString(i)));
@@ -89,11 +53,46 @@ public class CombinationGenerator {
         return fact;
     }
 
+    //------------------------------------------------
+    // Return number of combinations not yet generated
+    //------------------------------------------------
+
+    public void reset() {
+        for (int i = 0; i < a.length; i++) {
+            a[i] = i;
+        }
+        numLeft = new BigInteger(total.toString());
+    }
+
+    //-----------------------------
+    // Are there more combinations?
+    //-----------------------------
+
+    public BigInteger getNumLeft() {
+        return numLeft;
+    }
+
+    //------------------------------------
+    // Return total number of combinations
+    //------------------------------------
+
+    public boolean hasMore() {
+        return numLeft.compareTo(BigInteger.ZERO) == 1;
+    }
+
+    //------------------
+    // Compute factorial
+    //------------------
+
+    public BigInteger getTotal() {
+        return total;
+    }
+
     //--------------------------------------------------------
     // Generate next combination (algorithm from Rosen p. 286)
     //--------------------------------------------------------
 
-    public int[] getNext () {
+    public int[] getNext() {
 
         if (numLeft.equals(total)) {
             numLeft = numLeft.subtract(BigInteger.ONE);

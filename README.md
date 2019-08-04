@@ -5,54 +5,14 @@ This Frequency-Analyzer library provides many of the basic methods for dissectin
 a cryptogram or a body of text. Frequency analysis is an important technique for cryptanalysis
 and computational linguistics.
 
+Although many cryptography books were consulted in writing this code, such as: "Cryptanalysis: A Study of Ciphers and Their Solution" by Helen F. Gaines, there was no existing easy to use and lightweight library for doing automatic solutions. 
+
 Provided Examples
 -----------------
-* Encryption/Decryption GUI for automatic encryption/decryption of substitution ciphers
+* Automatic encryption/decryption of substitution ciphers
 * Encryption help with/attempted automated decryption of Vigenere ciphers
 * Automatically solving a shredder puzzle (see unit test: ShredderSolverTest)
 
-Scala Examples
---------------
-* Supporting Scala 2.11.4, scalatest 2.11 3.0.0
-* Scala Swing GUI for casual users
-* How to create a standalone executable jar file using Maven
-* Running Scala Spec tests inside Maven test phase
-* Scala test integration with JUnit
-* Scala Test Spec as BDD (Behavior Driven Development)
-* Cobertura report on unit test code coverage
-* Maven generation of Scaladocs
-
-How To Run the GUI
-------------------
-1. Download the project
-2. Download and set up [Maven 2](http://maven.apache.org)
-3. Navigate to the project directory, and run these commands:
-
-* cd FrequencyAnalyzer;
-* mvn clean package;
-* cd target;
-* java -jar frequency-analyzer-gui-dist.jar;
-
-Two jar files are created in the target directory:
-
- frequency-analyzer-dist.jar   (7.5M)
- frequency-analyzer.jar        (152k)
-
-`frequency-analyzer-dist.jar` is a standalone executable jar, and the application may be launched by
-just double-clicking on the jar file. This jar also contains all the Scala and Scala swing libraries.
-
-`frequency-analyzer.jar` is the library jar and it only contains the project's core files.
-
 Related links
 -------------
-* `Scala Test` <http://scalatest.org>
 * `Frequency Analysis` <http://en.wikipedia.org/wiki/Frequency_analysis>
-* `Maven` <http://maven.apache.org>
-* `MigLayout` <http://miglayout.com>
-
- To Do:
-------
-* Enhance the Scala to Java interface so that this library provides a common library to Java programs.
-* Provide a separate standalone program example that uses the library
-* More unit tests.
-* Expand multilingual character support.
