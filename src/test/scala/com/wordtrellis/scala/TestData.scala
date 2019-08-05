@@ -1,7 +1,4 @@
-
-
 package com.wordtrellis.scala
-
 
 import org.scalatest.FlatSpec
 
@@ -132,7 +129,6 @@ class TestData extends FlatSpec {
     * Unfortunately, it needs to fake that it's a unit test; otherwise it registers a failure;
     * in some configurations...
     */
-
   def doNothingOnce() {
     println()
   }

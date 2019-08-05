@@ -1,6 +1,4 @@
-
 package com.wordtrellis.scala
-
 
 import java.io.File
 
@@ -14,11 +12,10 @@ import scala.collection.mutable.ListBuffer
   * @author Todd Cook
   *
   */
-
 class ShredderSolverTest extends FlatSpec {
 
-
   "Test shredder solver" should "descramble " in {
+
     /**
       * This puzzle is from a popular AI class;
       * the hardest part of solving a shredder puzzle is how to represent the letters as a list of
@@ -45,7 +42,7 @@ class ShredderSolverTest extends FlatSpec {
     shards.append(new Shard(List("nd", "he", "ua", "ng", "ol", "le", "at", "  ")))
     shards.append(new Shard(List("on", "h ", "c ", "br", "e ", "er", "mm", ". ")))
     val dictionaryFile = new File(new File(".").getCanonicalPath + "/resources/words")
-    val result = ShredderPuzzle.getBestCandidate(shards.toList, dictionaryFile)
+    val result         = ShredderPuzzle.getBestCandidate(shards.toList, dictionaryFile)
     println(result)
     assert(FrequencyAnalyzer.dropSpaces(result.shard.toString()) == FrequencyAnalyzer.dropSpaces(
       "CLAUDESHANNONFOUNDEDINFORMATIONTHEORY,WHICHISTHEBASISOFPROBABILISTICLANGUAGEMODELSANDOFTHECODEBREAKINGMETHODSTHATYOUWOULDUSETOSOLVETHISPROBLEM,WITHTHEPAPERTITLEDAMATHEMATICALTHEORYOFCOMMUNICATION,PUBLISHEDINTHISYEAR."))

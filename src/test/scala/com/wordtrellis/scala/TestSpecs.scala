@@ -1,5 +1,3 @@
-
-
 package com.wordtrellis.scala
 
 import org.scalatest.FlatSpec
@@ -13,7 +11,6 @@ import org.scalatest.FlatSpec
   * @author : Todd Cook
   *
   */
-
 class TestSpecs extends FlatSpec {
 
   def testKeyCount() {
@@ -29,8 +26,3 @@ class TestSpecs extends FlatSpec {
   }
 
 }
-
-
-
-
-

@@ -6,18 +6,18 @@ package com.wordtrellis.scala
   * @author Todd Cook
   *
   */
-
 object Vigenere {
 
-  val UPPER_ENGLISH = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  val UPPER_ENGLISH     = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
   val CHARS: List[Char] = UPPER_ENGLISH.toList
 
   /**
     * Most often the key length will be the first or the first couple matches
     */
   def guessKeyLength(text: String): List[(Int, Int)] = {
-    val myRange = (2 to 26).toList
+    val myRange   = (2 to 26).toList
     val tupleList = for (mySeed <- myRange) yield shiftCount(text, mySeed)
+    import scala.math.Ordering.Double.IeeeOrdering
     tupleList.sortWith(_._2 > _._2)
   }
 
@@ -30,7 +30,7 @@ object Vigenere {
     var result = 0
     // shift the text off the back onto the front, so no matches are lost
     val shiftedText = shiftText(text, shift)
-    var ii = 0
+    var ii          = 0
     text.toList.foreach(letter => {
       if (letter == shiftedText(ii)) {
         result = result + 1
@@ -40,15 +40,16 @@ object Vigenere {
     (shift, result)
   }
 
-  def shiftText(text: String, shift: Int): String = text.substring(text.length - shift) +
-    text.substring(0, text.length - shift)
+  def shiftText(text: String, shift: Int): String =
+    text.substring(text.length - shift) +
+      text.substring(0, text.length - shift)
 
   def extractLetters(text: String, shift: Int): String = {
     if (shift == 0) return text
     val buf = new StringBuilder()
     // shift the text off the back onto the front, so no matches are lost
-    var ii = shift - 1;
     val textChars = text.toList
+    var ii        = shift - 1;
     while (ii < text.length) {
       buf.append(textChars(ii))
       ii = ii + shift
@@ -62,8 +63,8 @@ object Vigenere {
 
   private def convert(text: String, key: List[Int]): String = {
     val PLAINTEXT = text.toList.map(CHARS.indexOf(_))
-    var ii = 0
-    val buf = new StringBuilder()
+    val buf       = new StringBuilder()
+    var ii        = 0
     PLAINTEXT.foreach(letter => {
       buf.append(CHARS((key(ii % key.length) + letter) % 26))
       ii = ii + 1
@@ -75,4 +76,3 @@ object Vigenere {
     convert(text, key.toList.map(CHARS.indexOf(_)).map(26 - _))
   }
 }
-

@@ -1,8 +1,6 @@
-
 package com.wordtrellis.scala
 
 import org.scalatest.FunSpec
-
 
 /**
   * Spec for KeyCount
@@ -21,7 +19,7 @@ class KeyCountSpec extends FunSpec {
 
     it("determine equality solely based on the key's hashCode value") {
 
-      val keyCount = new KeyCount("one key", 11)
+      val keyCount  = new KeyCount("one key", 11)
       val keyCount2 = new KeyCount("two key", 21)
       assert(keyCount != keyCount2)
       val keyCount3 = new KeyCount("one key", 11)
@@ -29,7 +27,7 @@ class KeyCountSpec extends FunSpec {
     }
 
     it("be typed according to the key's type parameter") {
-      val keyCount = new KeyCount("one key", 11)
+      val keyCount  = new KeyCount("one key", 11)
       val keyCount2 = new KeyCount(java.lang.Long.valueOf(502L), 11)
       assert(keyCount != keyCount2)
       assert(keyCount.key.getClass != keyCount2.key.getClass)

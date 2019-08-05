@@ -21,16 +21,16 @@ class KeyCount[T](val key: T, val count: Int) extends Ordered[KeyCount[T]] {
 
   override def equals(other: Any): Boolean = other match {
     case that: KeyCount[T] => this.key == that.key
-    case _ => false
+    case _                 => false
   }
 
-  override def hashCode: Int = key.hashCode
+  override def hashCode: Int    = key.hashCode
   override def toString: String = s"$key $count"
 }
 
-
 class FrequencyMap[T](val items: List[T]) {
   private var keyMap = new mutable.HashMap[T, Int]
+
   /**
     * Sample size is useful for limiting the size of frequency map entries by
     * effectively truncating rare entries, if the FrequencyMap is growing to
@@ -61,7 +61,7 @@ class FrequencyMap[T](val items: List[T]) {
     // TODO decide if filtration floor is helpful
     //   samplingSize=  sample; filtrationFloor
     val newKClist = getKeyCountList.slice(0, samplingSize)
-    val toRemove = getKeyCountList diff newKClist
+    val toRemove  = getKeyCountList diff newKClist
     toRemove.foreach(x => removeKey(x.key))
   }
 
@@ -69,7 +69,7 @@ class FrequencyMap[T](val items: List[T]) {
 
   // returns a sorted list of KeyCounts
   def getKeyCountList(): List[KeyCount[T]] = {
-    val cm = keyMap
+    val cm     = keyMap
     val kcList = new ListBuffer[KeyCount[T]]()
     for ((key, count: Int) <- cm)
       kcList.append(new KeyCount(key, count))
@@ -91,12 +91,13 @@ class FrequencyMap[T](val items: List[T]) {
   }
 
   // returns list of keys, sorted by frequency
-  def getKeyList: List[T] = for {kc <- getKeyCountList().sortWith(_.count > _.count); k = kc.key} yield k
+  def getKeyList: List[T] =
+    for { kc <- getKeyCountList().sortWith(_.count > _.count); k = kc.key } yield k
 
   // returns list of values, sorted by frequency
-  def getValueList: List[Int] = for {kc <- getKeyCountList(); k = kc.count} yield k
+  def getValueList: List[Int] = for { kc <- getKeyCountList(); k = kc.count } yield k
 
-  def getKeyListFloor(floor: Int): List[T] = for {kc <- floorList(floor); k = kc.key} yield k
+  def getKeyListFloor(floor: Int): List[T] = for { kc <- floorList(floor); k = kc.key } yield k
 
   // items having floorVal count and above
   def floorList(floorVal: Int): List[KeyCount[T]] = getKeyCountList filter (_.count >= floorVal)
@@ -120,9 +121,9 @@ class FrequencyMap[T](val items: List[T]) {
     * so that the total sum of the map of probabilities equals one or nearly so.
     */
   def toProbabilityMap(): Map[T, Double] = {
-    val total: Double = keyMap.values.toList.sum * 1.0D
+    val total: Double  = keyMap.values.toList.sum * 1.0D
     val (keys, values) = keyMap.toList.unzip
-    val newValues = values.map(x => x / total)
+    val newValues      = values.map(x => x / total)
     keys.zip(newValues).toMap
   }
 }

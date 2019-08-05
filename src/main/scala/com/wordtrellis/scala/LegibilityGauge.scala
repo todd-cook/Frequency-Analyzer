@@ -1,5 +1,3 @@
-
-
 package com.wordtrellis.scala
 
 import scala.collection.immutable.List
@@ -10,13 +8,13 @@ import scala.collection.mutable
   * @author Todd Cook
   *
   */
-
 class LegibilityGauge(val commonDigraphs: List[String],
                       val commonTrigraphs: List[String],
                       val commonWords: List[String]) {
   val dictionary = new mutable.HashSet[String]()
 
   // an ugly default constructor
+  // format: off
   def this() = this(
     List("TH", "IN", "ER", "RE", "AN", "HE", "AR", "EN",
       "TI", "TE", "AT", "ON", "HA", "OU", "IT", "ES", "ST", "OR", "NT",
@@ -41,15 +39,10 @@ class LegibilityGauge(val commonDigraphs: List[String],
       "LES", "SAN", "STE", "ANY", "ART", "NTE", "RAT", "TUR", "ICA",
       "ICH", "NDE", "PRE", "ENC", "HAS", "WHE", "WIL", "ERA", "LIN",
       "TRA")
-    , List("THE",
-      "OF",
-      "AND ",
-      "TO",
+    , List("THE", "OF", "AND ", "TO",
       //"A",
-      "IN",
-      "THAT",
-      "IS ",
       //"I",
+      "IN", "THAT", "IS ",
       "IT", "FOR", "AS", "WITH", "WAS", "HIS", "HE", "BE",
       "NOT", "BY", "BUT", "HAVE", "YOU", "WHICH", "ARE", "ON", "OR",
       "HER", "HAD", "AT", "FROM", "THIS", "MY", "THEY", "ALL", "THEIR",
@@ -62,6 +55,7 @@ class LegibilityGauge(val commonDigraphs: List[String],
       "SAID", "TIME", "EVEN", "NEW", "COULD", "VERY", "MUCH", "OWN",
       "MOST", "MIGHT", "FIRST", "AFTER", "YET", "TWO")
   )
+  // format: on
 
   def loadDictionary(file: java.io.File): Unit = {
     val words = FrequencyAnalyzer.getWordList(file)
@@ -72,9 +66,12 @@ class LegibilityGauge(val commonDigraphs: List[String],
 
   def scoreText(text: String): Int = {
     var iScore = 0
-    commonWords.foreach(word => iScore += 6 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
-    commonDigraphs.foreach(word => iScore += 4 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
-    commonTrigraphs.foreach(word => iScore += 8 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
+    commonWords.foreach(word =>
+      iScore += 6 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
+    commonDigraphs.foreach(word =>
+      iScore += 4 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
+    commonTrigraphs.foreach(word =>
+      iScore += 8 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
     val words = text.split(" ")
     words.foreach(w => {
       if (dictionary.contains(w)) {
@@ -101,11 +98,14 @@ class LegibilityGauge(val commonDigraphs: List[String],
   // TODO rewrite method was unwieldly for large dictionaries
   def scoreCandidate(c: Candidate): Int = {
     val textList = c.getDecipheredText
-    var iScore = 0
+    var iScore   = 0
     textList.foreach(text => {
-      commonWords.foreach(word => iScore += 6 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
-      commonDigraphs.foreach(word => iScore += 4 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
-      commonTrigraphs.foreach(word => iScore += 8 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
+      commonWords.foreach(word =>
+        iScore += 6 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
+      commonDigraphs.foreach(word =>
+        iScore += 4 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
+      commonTrigraphs.foreach(word =>
+        iScore += 8 * FrequencyAnalyzer.countOccurences(word, text) * word.length)
       //TODO
       // for each text, split into chain of potential words, from length 4 to max length of dictionary entry
       // for each potential word check to see if it's in the dictionary, if so score it

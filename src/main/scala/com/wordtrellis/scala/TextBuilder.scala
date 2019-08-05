@@ -1,4 +1,3 @@
-
 package com.wordtrellis.scala
 
 /**
@@ -7,7 +6,6 @@ package com.wordtrellis.scala
   * @author Todd Cook
   *
   */
-
 class TextBuilder(val originalText: String) {
 
   private var morphedText = originalText
@@ -38,5 +36,4 @@ class TextBuilder(val originalText: String) {
     morphedText = FrequencyAnalyzer.dropNonLetters(morphedText)
     this
   }
-
 }

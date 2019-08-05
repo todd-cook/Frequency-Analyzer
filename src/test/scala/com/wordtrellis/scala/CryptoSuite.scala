@@ -1,7 +1,4 @@
-
-
 package com.wordtrellis.scala
-
 
 import org.scalatest.FunSuite
 
@@ -13,7 +10,7 @@ import org.scalatest.FunSuite
   */
 class CryptoSuite extends FunSuite {
 
-  val testSentence = "the quick brown fox jumps over the lazy dog"
+  val testSentence              = "the quick brown fox jumps over the lazy dog"
   val qBFLettersDescendingOrder = "OEHURTWPGVIAFNXSZDKCBQLMJY"
   var dictionary: String = new java.io.File(".").getCanonicalPath +
     java.io.File.separator +

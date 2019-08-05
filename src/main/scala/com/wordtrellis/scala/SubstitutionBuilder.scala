@@ -1,4 +1,3 @@
-
 package com.wordtrellis.scala
 
 import java.util.Date
@@ -28,40 +27,21 @@ class SubstitutionBuilder(val ALPHABET: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ") {
     substitutionMap
   }
 
-  /**
-    * Plain text should be converted to upper case before calling
-    */
-  def encipherSubstituted(plainText: String,
-                          substitutionMap: mutable.HashMap[Char, Char]): String = {
-    val result = new StringBuffer()
-    plainText.toCharArray.toList.foreach(c => {
-      val lookup = substitutionMap.get(c)
-      if (lookup.isDefined) result.append(lookup.get)
-      else result.append(c)
-    })
-    result.toString
-  }
-
-  def decipher(cipherText: String,
-               offset: Int): String = {
+  def decipher(cipherText: String, offset: Int): String = {
     val trueOffset = ALPHABET.length - offset
     encipherSubstituted(cipherText, getSubstitutionAlphabet(trueOffset))
   }
 
-  //TODO
-  // private def sortListLike ( listToSort, listParadigm)
-  // e.g.   listToSort random character mappings left,  listParadigm - target corpus frequency map
-
   /**
     * Create a random substitution alphabet, prepoulating with hints
     */
-  def getRandomSubstitutionAlphabet(hints: mutable.HashMap[Char, Char])
-  : mutable.HashMap[Char, Char] = {
-    val random = new Random(new Date().getTime)
-    val substitutionMap = new mutable.HashMap[Char, Char]()
-    var availableKeys = ALPHABET.toCharArray.toList
-    var availableValues = ALPHABET.toCharArray.toList
-    var key: Char = ' '
+  def getRandomSubstitutionAlphabet(
+      hints: mutable.HashMap[Char, Char]): mutable.HashMap[Char, Char] = {
+    val random                   = new Random(new Date().getTime)
+    val substitutionMap          = new mutable.HashMap[Char, Char]()
+    var availableKeys            = ALPHABET.toCharArray.toList
+    var availableValues          = ALPHABET.toCharArray.toList
+    var key: Char                = ' '
     var substitutionLetter: Char = ' '
 
     if (hints != null) {
@@ -83,14 +63,18 @@ class SubstitutionBuilder(val ALPHABET: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ") {
     substitutionMap
   }
 
+  //TODO
+  // private def sortListLike ( listToSort, listParadigm)
+  // e.g.   listToSort random character mappings left,  listParadigm - target corpus frequency map
+
   /**
     * used for getting creating substitution alphabets from the mapping of a decimated alphabet
     */
   def getSubstitutionAlphabet(iOffset: Int,
                               hm: mutable.HashMap[Char, Char]): mutable.HashMap[Char, Char] = {
-    val substitutionMap = new mutable.HashMap[Char, Char]()
-    var key: Char = ' '; // key
-    var key2: Char = ' '; // decimated value
+    val substitutionMap          = new mutable.HashMap[Char, Char]()
+    var key: Char                = ' '; // key
+    var key2: Char               = ' '; // decimated value
     var substitutionLetter: Char = ' '
 
     (0 to ALPHABET.length).foreach(ii => {
@@ -107,11 +91,24 @@ class SubstitutionBuilder(val ALPHABET: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ") {
     * We can handle list of ciphers as well
     */
   def encipherSubstitutedList(plainTextList: List[String],
-                              substitutionMap: mutable.HashMap[Char, Char])
-  : List[String] = {
+                              substitutionMap: mutable.HashMap[Char, Char]): List[String] = {
     val resultList = new ListBuffer[String]()
     plainTextList.foreach(plainText =>
       resultList.append(encipherSubstituted(plainText, substitutionMap)))
     resultList.toList
+  }
+
+  /**
+    * Plain text should be converted to upper case before calling
+    */
+  def encipherSubstituted(plainText: String,
+                          substitutionMap: mutable.HashMap[Char, Char]): String = {
+    val result = new StringBuffer()
+    plainText.toCharArray.toList.foreach(c => {
+      val lookup = substitutionMap.get(c)
+      if (lookup.isDefined) result.append(lookup.get)
+      else result.append(c)
+    })
+    result.toString
   }
 }

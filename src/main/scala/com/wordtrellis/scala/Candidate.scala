@@ -1,5 +1,3 @@
-
-
 package com.wordtrellis.scala
 
 import scala.collection.immutable.List
@@ -16,25 +14,25 @@ class Candidate(val cipherText: List[String],
                 var charMap: mutable.HashMap[Char, Char],
                 val useHints: Boolean,
                 var formula: String)
-  extends Ordered[Candidate] {
+    extends Ordered[Candidate] {
   val possibleHints = new mutable.HashMap[Char, Char]()
-  var score = 0
+  var score         = 0
 
   def this(cipherText: String, decipheredText: String) {
-    this(List(cipherText), List(decipheredText),
-      new mutable.HashMap[Char, Char](), false, "")
+    this(List(cipherText), List(decipheredText), new mutable.HashMap[Char, Char](), false, "")
   }
 
   def this(cipherText: List[String], decipheredText: List[String]) {
-    this(cipherText, decipheredText,
-      new mutable.HashMap[Char, Char](), false, "")
+    this(cipherText, decipheredText, new mutable.HashMap[Char, Char](), false, "")
   }
 
   def this(cipherText: String, decipheredText: List[String], charMap: mutable.HashMap[Char, Char]) {
     this(List(cipherText), decipheredText, charMap, false, "")
   }
 
-  def this(cipherTextList: List[String], decipheredText: List[String], charMap: mutable.HashMap[Char, Char]) {
+  def this(cipherTextList: List[String],
+           decipheredText: List[String],
+           charMap: mutable.HashMap[Char, Char]) {
     this(cipherTextList, decipheredText, charMap, false, "")
   }
 
@@ -72,7 +70,7 @@ class Candidate(val cipherText: List[String],
 
   override def equals(other: Any): Boolean = other match {
     case that: Candidate => this.decipheredText == that.decipheredText
-    case _ => false
+    case _               => false
   }
 
   override def hashCode(): Int = decipheredText.hashCode

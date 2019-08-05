@@ -1,4 +1,3 @@
-
 package com.wordtrellis.scala
 
 import java.io.File
@@ -28,8 +27,9 @@ class Shard(val rows: List[String]) {
 class ShardCandidate(val shard: Shard, val indices: List[Int]) {
   var score = 0
 
-  override def toString: String = "Score: " + score + ", indices: " +
-    indices.mkString(",") + "; text: " + shard.toString()
+  override def toString: String =
+    "Score: " + score + ", indices: " +
+      indices.mkString(",") + "; text: " + shard.toString()
 }
 
 object ShredderPuzzle {
@@ -54,15 +54,16 @@ object ShredderPuzzle {
     // heuristic figure to limit the combinatory dataset used to harvest results
     // note: for this problem, you can limit it to: shards.size, however, I wouldn't
     // recommend it for other puzzles
-    val MIN_COMBOS = shards.size * 4
-    val upperShards = shards.map(a => new Shard(a.rows.map(_.toUpperCase)))
+    val MIN_COMBOS      = shards.size * 4
+    val upperShards     = shards.map(a => new Shard(a.rows.map(_.toUpperCase)))
     val legibilityGauge = new LegibilityGauge()
     // Loading the dictionary into the legibility gauge; accuracy skyrockets
     legibilityGauge.loadDictionary(dictionary)
     //println("dictionary loaded")
     val shardBuilder = new ListBuffer[ShardCandidate]()
-    Iterator.range(0, upperShards.length).foreach(i => shardBuilder.append(
-      new ShardCandidate(upperShards(i), List(i))))
+    Iterator
+      .range(0, upperShards.length)
+      .foreach(i => shardBuilder.append(new ShardCandidate(upperShards(i), List(i))))
     var shardCandidates = shardBuilder.toList
     while (shardCandidates(0).indices.size < upperShards.size) {
       val tmps = ShredderPuzzle.generate(upperShards, shardCandidates)
