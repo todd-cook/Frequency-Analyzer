@@ -8,7 +8,7 @@
     <version>1.0</version>
     <packaging>jar</packaging>
     <properties>
-        <scala.version>2.13.0</scala.version>
+        <scala.version>2.13.9</scala.version>
         <scalaswing.version>2.11.0-M7</scalaswing.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
